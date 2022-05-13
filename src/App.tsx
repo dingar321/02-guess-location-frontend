@@ -1,6 +1,4 @@
 import { ThemeProvider } from '@emotion/react';
-import { createTheme } from '@mui/material';
-import React, { useState } from 'react';
 
 //Themes
 import DefaultTheme from './common/styles/default-theme';
