@@ -5,7 +5,7 @@ import { SwipeableDrawer } from '@mui/material'
 import { Divider } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import HeaderStyle from './Header.style'
+
 //images
 const HeaderLogo = require('../../assets/header/header-logo.png') as string;
 const HeaderAdd = require('../../assets/header/header-add.png') as string;
