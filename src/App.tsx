@@ -1,11 +1,25 @@
-import React from 'react';
+import { ThemeProvider } from '@emotion/react';
+import { createTheme } from '@mui/material';
+import React, { useState } from 'react';
 
+//Themes
+import DefaultTheme from './common/styles/default-theme';
+
+//Components 
+import Header from './components/navbar/Header';
 
 function App() {
+
   return (
-    <div>
-      <h1>Hello World</h1>
-    </div>
+    <ThemeProvider theme={DefaultTheme}>
+      <div className='app'>
+        <Header />
+        <div>
+
+        </div>
+      </div>
+    </ThemeProvider>
+
   );
 }
 
