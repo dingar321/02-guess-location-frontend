@@ -27,7 +27,7 @@ const ButtonStyle = {
     height: '31px',
     background: '#619B8A',
 
-    fontWeight: '400px',
+    fontWeight: '400',
     fontSize: '16px',
     lineHeight: '19px',
 
@@ -42,7 +42,7 @@ const HamburgerButtonStyleSignUp = {
 
     borderRadius: '4px',
 
-    fontWeight: '400px',
+    fontWeight: '400',
     fontSize: '16px',
     lineHeight: '19px',
 }
@@ -55,11 +55,18 @@ const HamburgerButtonStyleSignIn = {
     background: 'white',
     color: '#619B8A',
     borderRadius: '4px',
-    fontWeight: '400px',
+    fontWeight: '400',
     fontSize: '16px',
     lineHeight: '19px',
     border: '2px solid'
 }
+
+
+/*
+TODO:
+FIX MIN-WIDTH
+
+*/
 
 
 const Header = () => {
@@ -70,19 +77,14 @@ const Header = () => {
     const [logged, setLogged] = useState<boolean>(false);
 
     return (
-        <AppBar sx={{ background: 'white', my: 5, mx: 1 }} position='sticky' elevation={0}>
-
+        <nav style={{ background: 'white', height: '100px', paddingTop: '20px', }}>
             {/* Default header */}
-            <Container maxWidth='xl'>
+
+            <Container style={{ maxWidth: 1500 }}>
                 <Toolbar disableGutters>
-
-                    <Typography color="inherit" noWrap sx={{ mx: 0, flexGrow: 1 }}>
-                        <img src={HeaderLogo} />
-                    </Typography>
-
                     <Hidden smDown>
+                        <Typography noWrap sx={{ mx: 0, flexGrow: 1 }} style={{ paddingLeft: '40px' }} > <img src={HeaderLogo} /> </Typography>
                         {/* Default header content */}
-
                         {((!logged)) &&
                             <>
                                 <Button variant="text" style={TextButtontyle}> Sign in </Button>
@@ -101,19 +103,24 @@ const Header = () => {
                             </>
                         }
                     </Hidden>
-                    <Hidden smUp>
-                        <IconButton style={{ color: '#619B8A' }}>
-                            <MenuIcon sx={{ fontSize: 35 }} onClick={() => setOpenBurgerMenu(true)} />
+                    <Hidden smUp >
+                        <Typography noWrap sx={{ mx: 0, flexGrow: 1 }} style={{ paddingLeft: '40px', paddingTop: '10px' }} > <img src={HeaderLogo} /> </Typography>
+                        {/* When header is > 600px we show the hamburger menu */}
+                        <IconButton style={{ color: '#619B8A', paddingTop: '10px' }} sx={{ sm: 1, mx: 5 }} onClick={() => setOpenBurgerMenu(true)}>
+                            <MenuIcon sx={{ fontSize: 35 }} />
                         </IconButton>
+
+
                     </Hidden>
+
                 </Toolbar>
             </Container>
 
             {/* Hamburger header */}
             <SwipeableDrawer anchor='top' open={openBurgerMenu} onOpen={() => setOpenBurgerMenu(true)} onClose={() => setOpenBurgerMenu(false)}>
                 <div>
-                    <IconButton style={{ float: 'right', color: '#619B8A' }} sx={{ my: 1 }}>
-                        <CloseIcon sx={{ fontSize: '24px' }} onClick={() => setOpenBurgerMenu(false)} style={{ marginRight: '55px', borderRadius: '4px', background: 'white' }} />
+                    <IconButton style={{ float: 'right', color: '#619B8A' }} sx={{ my: 1 }} onClick={() => setOpenBurgerMenu(false)} >
+                        <CloseIcon sx={{ fontSize: '24px' }} style={{ marginRight: '55px', borderRadius: '4px', background: 'white' }} />
                     </IconButton>
                 </div>
                 <Divider />
@@ -141,6 +148,7 @@ const Header = () => {
                     <>
                         <div>
                             <Box sx={{ my: 2, mx: 5, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                                {/* Profile image and full name */}
                                 <IconButton style={{
                                     color: '#233D4D', background: 'white', borderRadius: '4px', width: '300px', height: '40px',
                                     justifyContent: 'left', marginBottom: '30px', marginTop: '10px'
@@ -149,6 +157,7 @@ const Header = () => {
                                     <Typography sx={{ fontSize: '24px' }} style={{ paddingLeft: '30px' }}> Name Last </Typography>
                                 </IconButton>
 
+                                {/* Home button */}
                                 <IconButton style={{
                                     color: '#233D4D', background: 'white', borderRadius: '4px', width: '300px', height: '40px',
                                     justifyContent: 'space-between', marginBottom: '30px', marginTop: '10px'
@@ -157,6 +166,7 @@ const Header = () => {
                                     <ChevronRightIcon sx={{ fontSize: 35 }} />
                                 </IconButton>
 
+                                {/* Profile settings button */}
                                 <IconButton style={{
                                     color: '#233D4D', background: 'white', borderRadius: '4px', width: '300px', height: '40px',
                                     justifyContent: 'space-between', marginBottom: '30px', marginTop: '-20px'
@@ -165,6 +175,7 @@ const Header = () => {
                                     <ChevronRightIcon sx={{ fontSize: 35 }} />
                                 </IconButton>
 
+                                {/* Logout button */}
                                 <IconButton style={{
                                     color: '#233D4D', background: 'white', borderRadius: '4px', width: '300px', height: '40px',
                                     justifyContent: 'space-between', marginBottom: '30px', marginTop: '-20px',
@@ -179,7 +190,7 @@ const Header = () => {
 
             </SwipeableDrawer>
 
-        </AppBar >
+        </nav >
     )
 }
 
