@@ -7,9 +7,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 //images
-const HeaderLogo = require('../../assets/header/header-logo.png') as string;
-const HeaderAdd = require('../../assets/header/header-add.png') as string;
-const HeaderProfile = require('../../assets/header/header-profile.png') as string;
+const HeaderLogo = require('../../assets/images/header-logo-full.png') as string;
+const AddImage = require('../../assets/images/header-add-image.png') as string;
+const ProfileImage = require('../../assets/images/header-profile-image.png') as string;
 
 const TextButtontyle = {
     /* Text based buttons */
@@ -98,8 +98,8 @@ const Header = () => {
                                 <Button variant="text" style={TextButtontyle}> Home </Button>
                                 <Button variant="text" style={TextButtontyle}> Profile settings </Button>
                                 <Button variant="text" style={TextButtontyle}> Logout </Button>
-                                <Avatar alt="profile-image" src={HeaderProfile} sx={{ mx: 2.5 }} />
-                                <Avatar alt="" src={HeaderAdd} />
+                                <Avatar alt="profile-image" src={ProfileImage} sx={{ mx: 2.5 }} />
+                                <Avatar alt="" src={AddImage} />
                             </>
                         }
                     </Hidden>
@@ -153,7 +153,7 @@ const Header = () => {
                                     color: '#233D4D', background: 'white', borderRadius: '4px', width: '300px', height: '40px',
                                     justifyContent: 'left', marginBottom: '30px', marginTop: '10px'
                                 }}>
-                                    <Avatar alt="profile-image" src={HeaderProfile} />
+                                    <Avatar alt="profile-image" src={ProfileImage} />
                                     <Typography sx={{ fontSize: '24px' }} style={{ paddingLeft: '30px' }}> Name Last </Typography>
                                 </IconButton>
 

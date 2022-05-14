@@ -9,7 +9,7 @@ import './common/styles/App.css';
 import Header from './components/navbar/Header';
 import Footer from './components/footer/Footer';
 import Test from './components/test';
-
+import Signin from './components/signup/Signin';
 
 function App() {
 
@@ -17,18 +17,17 @@ function App() {
     <ThemeProvider theme={DefaultTheme}>
       <div className="app" >
         <div>
-          <Header />
+          {/*  <Header /> */}
           <div className='main'>
-            <Container maxWidth="xl">
-
-              {/* Main  */}
 
 
+            {/* Main  */}
+            <Signin />
 
-            </Container>
+
           </div>
         </div>
-        <Footer />
+        {/* <Footer /> */}
       </div >
     </ThemeProvider>
 

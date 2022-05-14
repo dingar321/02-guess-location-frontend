@@ -1,8 +1,8 @@
 import { Box, Container, Hidden, Typography } from '@mui/material';
 import React from 'react';
 
-const FooterLogo = require('../../assets/footer/footer-logo.png') as string;
-const FooterSmLogo = require('../../assets/footer/footer-sm-logo.png') as string;
+const FooterLogo = require('../../images/footer/footer-logo.png') as string;
+const FooterSmLogo = require('../../images/footer/footer-sm-logo.png') as string;
 
 const Footer = () => {
 
