@@ -13,20 +13,17 @@ const Signin = () => {
         event.preventDefault();
     };
 
-
     return (
         <div>
             <Grid container style={{}}>
                 <Grid item xs={12} sm={6} style={{ padding: 100, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                    {/* Form */}
                     <div />
                     <div style={{ textAlign: 'center' }}>
                         <Grid container style={{ display: 'flex', flexDirection: 'column' }}>
-
+                            {/* Form */}
                         </Grid>
                     </div>
                     <div />
-                    {/* /Form */}
                 </Grid>
                 <Grid container item xs={12} sm={6}>
                     <img src={RightSideVector} style={{ width: '100%', height: '100vh', objectFit: 'cover' }} alt="" />

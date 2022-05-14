@@ -11,6 +11,8 @@
 
 .app {
     /* This is the top of the page anything under this div is the footer */
+    /* min-height -> makes the footer stay on the bottom of the page */
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

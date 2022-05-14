@@ -1,14 +1,13 @@
 import { Box, Container, Hidden, Typography } from '@mui/material';
 import React from 'react';
 
-const FooterLogo = require('../../images/footer/footer-logo.png') as string;
-const FooterSmLogo = require('../../images/footer/footer-sm-logo.png') as string;
+const FooterLogo = require('../../assets/images/footer-logo.png') as string;
+const FooterSmLogo = require('../../assets/images/footer-sm-logo.png') as string;
 
 const Footer = () => {
 
     return (
         <footer style={{ height: '60px', background: '#619B8A' }}>
-
             <Hidden smDown>
                 {/* Footer: > 600px */}
                 <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', textAlign: 'center', my: 2.5, mx: 10 }}>
@@ -27,8 +26,6 @@ const Footer = () => {
                     <Typography sx={{ color: 'white', fontSize: 12 }}>All Rights Reserved | skillupmentor.com</Typography>
                 </Box>
             </Hidden>
-
-
         </footer>
     )
 }
