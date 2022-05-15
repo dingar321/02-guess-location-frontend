@@ -25,7 +25,9 @@ const Profile = () => {
 
             <Grid>
                 <Grid container>
-                    <Typography style={{ paddingRight: 20, color: '#233D4D', background: 'white', fontWeight: 400, fontSize: 24, }} sx={{ pb: 5 }}>My best guesses</Typography>
+                    <Typography style={{ paddingRight: 20, color: '#233D4D', background: 'white', fontWeight: 400, fontSize: 24, }} sx={{ pb: 5 }}>
+                        My best guesses
+                    </Typography>
                 </Grid>
                 <Grid container spacing={4} style={{ background: 'white', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
                     {cards.map((card) => (
@@ -41,7 +43,9 @@ const Profile = () => {
 
             <Grid>
                 <Grid container>
-                    <Typography style={{ paddingRight: 20, color: '#233D4D', background: 'white', fontWeight: 400, fontSize: 24, }} sx={{ pb: 5 }}>My posted locations</Typography>
+                    <Typography style={{ paddingRight: 20, color: '#233D4D', background: 'white', fontWeight: 400, fontSize: 24, }} sx={{ pb: 5 }}>
+                        My posted locations
+                    </Typography>
                 </Grid>
                 <Grid container spacing={4} style={{ background: 'white', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
                     {cards.map((card) => (

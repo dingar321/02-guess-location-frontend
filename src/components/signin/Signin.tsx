@@ -13,6 +13,8 @@ const RightSideVector = require('../../assets/images/form-right-vector.png') as 
 const AvatarIcon = require('../../assets/icons/avatar-icon.png') as string;
 const HeaderLogo = require('../../assets/images/header-logo-full.png') as string;
 
+//xs={false} 
+
 const Signin = () => {
 
     const [errorMessage, setErrorMessage] = useState<string>('');

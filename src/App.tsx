@@ -1,5 +1,4 @@
 import { ThemeProvider } from '@emotion/react';
-import { Container } from '@mui/material';
 
 //Themes
 import DefaultTheme from './common/styles/default-theme';
@@ -12,6 +11,7 @@ import Test from './components/test';
 import Signup from './components/signup/Signup';
 import Signin from './components/signin/Signin';
 import Profile from './components/profile/Profile';
+import Home from './components/home/Home';
 
 function App() {
 
@@ -22,13 +22,9 @@ function App() {
           <Header />
           <div className='main'>
 
-
-
-
-            <Profile />
+            <Home />
             {/*
-                        <Signup />
-            
+            <Signup />
             */}
 
           </div>
