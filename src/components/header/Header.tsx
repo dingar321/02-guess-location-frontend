@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Hidden, AppBar, Button, Container, Toolbar, Typography, IconButton, Box, Avatar, createTheme, createStyles, makeStyles } from '@mui/material'
+import { Hidden, AppBar, Button, Container, Toolbar, Typography, IconButton, Box, Avatar, createTheme, createStyles, makeStyles, Paper } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import { SwipeableDrawer } from '@mui/material'
 import { Divider } from '@mui/material'
@@ -104,12 +104,13 @@ const Header = () => {
                         }
                     </Hidden>
                     <Hidden smUp >
-                        <Typography noWrap sx={{ mx: 0, flexGrow: 1 }} style={{ paddingLeft: '40px', paddingTop: '10px' }} > <img src={HeaderLogo} /> </Typography>
-                        {/* When header is > 600px we show the hamburger menu */}
-                        <IconButton style={{ color: '#619B8A', paddingTop: '10px' }} sx={{ sm: 1, mx: 5 }} onClick={() => setOpenBurgerMenu(true)}>
-                            <MenuIcon sx={{ fontSize: 35 }} />
-                        </IconButton>
-
+                        <AppBar sx={{ pt: 2, px: 0, padding: 3, heigth: 400, display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', background: 'white' }} component={Paper} elevation={2}>
+                            <Typography noWrap sx={{ mx: 0, flexGrow: 1 }}> <img src={HeaderLogo} /> </Typography>
+                            {/* When header is > 600px we show the hamburger menu */}
+                            <IconButton style={{ color: '#619B8A', paddingTop: '10px', margin: 5, borderRadius: '4px' }} sx={{ sm: 1, mx: 5 }} onClick={() => setOpenBurgerMenu(true)}>
+                                <MenuIcon sx={{ fontSize: 35 }} />
+                            </IconButton>
+                        </AppBar>
 
                     </Hidden>
 

@@ -6,7 +6,7 @@ import DefaultTheme from './common/styles/default-theme';
 import './common/styles/App.css';
 
 //Components 
-import Header from './components/navbar/Header';
+import Header from './components/header/Header';
 import Footer from './components/footer/Footer';
 import Test from './components/test';
 import Signin from './components/signup/Signin';
