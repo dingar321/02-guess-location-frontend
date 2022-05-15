@@ -16,10 +16,10 @@ const Header = () => {
     return (
         <nav style={{ background: 'white', height: '100px', paddingTop: '24px', }}>
             {/* Default header */}
-            <Container style={{ maxWidth: 1500 }}>
+            <Container style={{ maxWidth: 1800 }}>
                 <Toolbar disableGutters>
                     <Hidden smDown>
-                        <Typography noWrap sx={{ mx: 0, flexGrow: 1 }} style={{ paddingLeft: '40px' }} > <img src={HeaderLogo} /> </Typography>
+                        <Typography noWrap sx={{ mx: 0, flexGrow: 1 }} > <img src={HeaderLogo} /> </Typography>
                         {((!logged)) &&
                             <>
                                 <Button variant="text" style={ButtonLink}> Sign in </Button>
