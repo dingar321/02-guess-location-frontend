@@ -9,7 +9,8 @@ import './common/styles/App.css';
 import Header from './components/header/Header';
 import Footer from './components/footer/Footer';
 import Test from './components/test';
-import Signin from './components/signup/Signin';
+import Signup from './components/signup/Signup';
+import Signin from './components/signin/Signin';
 
 function App() {
 
@@ -17,17 +18,21 @@ function App() {
     <ThemeProvider theme={DefaultTheme}>
       <div className="app" >
         <div>
-          {/*  <Header /> */}
+
           <div className='main'>
 
 
-            {/* Main  */}
-            <Signin />
 
+
+            <Signup />
+            {/*
+                        <Signup />
+            
+            */}
 
           </div>
         </div>
-        {/* <Footer /> */}
+
       </div >
     </ThemeProvider>
 

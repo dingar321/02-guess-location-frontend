@@ -1,8 +1,8 @@
 import React from 'react'
 
-const ButtonXl = {
+const ButtonMd = {
     /* contained based buttons */
-    width: '420px',
+    width: '137px',
     height: '30px',
 
     background: '#619B8A',
@@ -21,4 +21,4 @@ const ButtonXl = {
     color: '#FFFFFF',
 }
 
-export default ButtonXl;
+export default ButtonMd;

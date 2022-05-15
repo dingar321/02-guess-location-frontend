@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { Avatar, Button, Container, createTheme, FilledInput, FormControl, Grid, Hidden, IconButton, Input, InputAdornment, InputLabel, Paper, TextField, ThemeProvider, Typography } from '@mui/material'
-import { alpha, Box } from '@mui/system';
+import { Avatar, Button, Container, Grid, Hidden, IconButton, InputAdornment, TextField, Typography } from '@mui/material'
+import { Box } from '@mui/system';
 import ButtonXl from '../buttons/ButtonXl';
 import ButtonLink from '../buttons/ButtonLink';
 import { styled } from '@mui/material/styles';
-import { boolean } from 'yup';
 import Header from '../header/Header';
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { ConstructionOutlined } from '@mui/icons-material';
+import HamburgerHeader from '../header/HamburgerHeader';
+
 //Image uploads:
 //https://stackoverflow.com/questions/57474348/specify-type-for-file-upload-event-in-react-typescript
 
 const RightSideVector = require('../../assets/images/form-right-vector.png') as string;
 const AvatarIcon = require('../../assets/icons/avatar-icon.png') as string;
-
-
-
-const Signin = () => {
+const HeaderLogo = require('../../assets/images/header-logo-full.png') as string;
+const Signup = () => {
 
     const [errorMessage, setErrorMessage] = useState<string>('');
     const errorRef = React.useRef<HTMLInputElement | null>(null)
@@ -69,9 +67,8 @@ const Signin = () => {
         setErrorMessage('');
     }, [email, firstName, lastName, password, passwordConfirm])
 
-    // -------------------------------------
-    // TODO:Fragment to each input their own
-    // -------------------------------------
+
+    //Check if email the email is valid
     useEffect(() => {
         if (emailBlurred) {
             setEmailBlurred(false);
@@ -90,7 +87,10 @@ const Signin = () => {
                 }
             }
         }
+    }, [emailBlurred])
 
+    //Check if email the email is valid
+    useEffect(() => {
         if (firstNameBlurred) {
             setFirstNameBlurred(false);
             if (firstName.length != 0) {
@@ -108,6 +108,10 @@ const Signin = () => {
                 }
             }
         }
+    }, [firstNameBlurred])
+
+    //Check if email the email is valid
+    useEffect(() => {
 
         if (lastNameBlurred) {
             setLastNameBlurred(false);
@@ -126,6 +130,10 @@ const Signin = () => {
                 }
             }
         }
+    }, [lastNameBlurred])
+
+    //Check if email the email is valid
+    useEffect(() => {
 
         if (passwordBlurred) {
             setPasswordBlurred(false);
@@ -144,11 +152,13 @@ const Signin = () => {
                 }
             }
         }
+    }, [passwordBlurred])
 
+    //Check if email the email is valid
+    useEffect(() => {
         if (passwordConfirmBlurred) {
             if (passwordConfirm.length != 0) {
                 if (passwordValid) {
-
                     setPasswordConfirmBlurred(false);
                     if (password != passwordConfirm) {
                         setPasswordConfirmError(true);
@@ -168,9 +178,7 @@ const Signin = () => {
                 }
             }
         }
-    }, [firstNameBlurred, emailBlurred, lastNameBlurred,
-        passwordBlurred, passwordConfirmBlurred]
-    )
+    }, [passwordConfirmBlurred])
 
 
     //Submit
@@ -235,8 +243,8 @@ const Signin = () => {
             <Grid container>
                 <Hidden lgDown>
                     {/* Normal view, display only the form  */}
-                    <Grid item xs={12} sm={6} style={{ padding: 100, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} >
-                        <div />
+                    <Grid item xs={12} sm={6} style={{ padding: 10, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} >
+                        <Typography noWrap> <img src={HeaderLogo} style={{ paddingTop: '20px', paddingLeft: '40px' }} /> </Typography>
                         <div>
                             {/* Form */}
                             <Box component="form" noValidate={true} onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -328,8 +336,11 @@ const Signin = () => {
 
                 <Hidden lgUp>
                     {/* Phone view, display only the form  */}
-                    <Header />
-                    <Container style={{ paddingTop: '5em' }}>
+                    <Hidden smUp>
+                        {/* Hamburger header only shows if we are on a small window size   */}
+                        <HamburgerHeader />
+                    </Hidden>
+                    <Container style={{ paddingTop: '13em' }}>
                         {/* Form */}
                         <Box component="form" noValidate={true} onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                             <Typography style={{ color: '#233D4D', fontWeight: 500, fontSize: 48 }}> Sign up </Typography>
@@ -417,7 +428,7 @@ const Signin = () => {
     )
 }
 
-export default Signin
+export default Signup
 
 
 
