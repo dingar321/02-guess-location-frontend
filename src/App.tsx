@@ -11,6 +11,7 @@ import Footer from './components/footer/Footer';
 import Test from './components/test';
 import Signup from './components/signup/Signup';
 import Signin from './components/signin/Signin';
+import Profile from './components/profile/Profile';
 
 function App() {
 
@@ -18,13 +19,13 @@ function App() {
     <ThemeProvider theme={DefaultTheme}>
       <div className="app" >
         <div>
-
+          <Header />
           <div className='main'>
 
 
 
 
-            <Signup />
+            <Profile />
             {/*
                         <Signup />
             
@@ -32,9 +33,9 @@ function App() {
 
           </div>
         </div>
-
+        <Footer />
       </div >
-    </ThemeProvider>
+    </ThemeProvider >
 
   );
 }

@@ -11,10 +11,10 @@ const AvatarIcon = require('../../assets/icons/avatar-icon.png') as string;
 
 const Header = () => {
     //Setting if user is logged in
-    const [logged, setLogged] = useState<boolean>(true);
+    const [logged, setLogged] = useState<boolean>(false);
 
     return (
-        <nav style={{ background: 'white', height: '100px', paddingTop: '20px', }}>
+        <nav style={{ background: 'white', height: '100px', paddingTop: '24px', }}>
             {/* Default header */}
             <Container style={{ maxWidth: 1500 }}>
                 <Toolbar disableGutters>
