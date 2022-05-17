@@ -1,9 +1,7 @@
 import { Avatar, Box, Button, Container, Grid, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import Guess from '../../common/models/Guess';
-
 import ButtonLoad from '../buttons/ButtonLoad'
-
 import GuessCard from '../guess/GuessCard';
 import LocationCard from '../locations/LocationCard';
 

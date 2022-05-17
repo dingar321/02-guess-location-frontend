@@ -7,6 +7,7 @@ import mapThemeMono from '../../common/styles/map-theme-mono'
 import ButtonMd from '../buttons/ButtonMd';
 import ImageSearchIcon from '@mui/icons-material/ImageSearch';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import axios from 'axios';
 
 const locationPlaceholderImage = require('../../assets/images/locationPlaceholderImage.png') as string;
 const markerIcon = require('../../assets/icons/markerIcon.png') as string;
@@ -30,20 +31,31 @@ const LocationAdd = () => {
     const [errorMessage, setErrorMessage] = useState<string>('');
     const errorRef = React.useRef<HTMLInputElement | null>(null)
 
+    //User provided values
+    const [coordinates, setCoordinates] = useState<Pin>({ lat: 0.000000, lng: 0.000000 });
+    const [cordChanged, setChordChanged] = useState<boolean>(false);
     const [file, setFile] = useState<File>()
     const [uploadedFilePath, setUploadedFilePath] = useState<string>('')
-
-    //Invalid format of latitude and longitude values. (0, 0)
-    const [coordinates, setCoordinates] = useState<Pin>({
-        lat: 0.000000,
-        lng: 0.000000
-    });
-
     const [locationName, setLocationName] = useState<string>('');
 
-    const { isLoaded, loadError } = useLoadScript({
-        googleMapsApiKey: "AIzaSyAIBPe20QV-J4j0Gl8xJz3OM838b540DT0",
-    });
+    //Google api key
+    const { isLoaded, loadError } = useLoadScript({ googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY as string, });
+
+    useEffect(() => {
+        if (cordChanged) {
+            setChordChanged(false);
+            const options = {
+                method: 'GET',
+                url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinates.lat},${coordinates.lng}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY as string}`,
+            };
+
+            axios.request(options).then(function (response) {
+                console.log(response.data.results[2].formatted_address);
+            }).catch(function (error) {
+                console.error(error);
+            });
+        }
+    }, [cordChanged])
 
     if (loadError) return <div>Error loading maps</div>;
     if (!isLoaded) return <div>Loading maps</div>;
@@ -52,6 +64,7 @@ const LocationAdd = () => {
     const Input = styled('input')({
         display: 'none',
     });
+
 
     const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files) {
@@ -128,7 +141,8 @@ const LocationAdd = () => {
             <Grid style={{ background: 'white', display: 'flex', flexDirection: 'row', justifyContent: 'center', border: '2px solid #619B8A' }} sx={{ pt: 0 }}>
                 <GoogleMap mapContainerStyle={mapContainerStyle} zoom={2} center={coordinates} options={googleMapsOptions}
                     onClick={(e) => {
-                        setCoordinates({ lat: e.latLng?.lat() as number, lng: e.latLng?.lng() as number })
+                        setCoordinates({ lat: e.latLng?.lat() as number, lng: e.latLng?.lng() as number });
+                        setChordChanged(true);
                     }}>
 
                     {((coordinates.lat !== 0.000000 && coordinates.lng !== 0.000000)) &&

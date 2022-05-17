@@ -13,6 +13,7 @@ import Signin from './components/signin/Signin';
 import Profile from './components/profile/Profile';
 import Home from './components/home/Home';
 import LocationAdd from './components/locations/LocationAdd';
+import GuessAdd from './components/guess/GuessAdd';
 
 function App() {
 
