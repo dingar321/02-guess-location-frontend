@@ -24,7 +24,7 @@ function App() {
           <Header />
           <div className='main'>
 
-            <LocationAdd />
+            <GuessAdd />
             {/*
             <Signup />
             */}

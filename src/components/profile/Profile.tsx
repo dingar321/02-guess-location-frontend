@@ -9,7 +9,7 @@ const AvatarIcon = require('../../assets/icons/avatar-icon.png') as string;
 
 const Profile = () => {
 
-    const [bestGuesses, setBestGuesses] = useState<Guess[]>();
+    const [userBestGuesses, setUserBestGuesses] = useState<Guess[]>();
     const cards = [1, 2, 3, 4];
 
     return (

@@ -50,12 +50,17 @@ const LocationAdd = () => {
             };
 
             axios.request(options).then(function (response) {
-                console.log(response.data.results[2].formatted_address);
+                //console.log(response.data.results[2].formatted_address);
+                setLocationName(response.data.results[2].formatted_address)
             }).catch(function (error) {
                 console.error(error);
             });
         }
     }, [cordChanged])
+
+    useEffect(() => {
+
+    }, [locationName])
 
     if (loadError) return <div>Error loading maps</div>;
     if (!isLoaded) return <div>Loading maps</div>;
@@ -152,8 +157,8 @@ const LocationAdd = () => {
                 </GoogleMap>
             </Grid>
             <Grid style={{ background: 'white', display: 'flex', flexDirection: 'row', justifyContent: 'center' }} sx={{ pt: 2 }}>
-                <TextField label="Location name" type="text" required autoComplete='off' placeholder='' variant="outlined" style={{ width: 810, height: 14 }}
-                    onChange={(e) => setLocationName(e.target.value)} />
+                <TextField label="Location name, select a location on the map" disabled={true} type="text" required autoComplete='off' placeholder='' variant="outlined" style={{ width: 810, height: 14 }}
+                    onChange={(e) => setLocationName(e.target.value)} value={locationName} />
             </Grid >
             <Grid style={{ background: 'white', display: 'flex', float: 'right' }} sx={{ pt: 6 }}>
                 <Button type="submit" style={ButtonMd}>ADD</Button>
