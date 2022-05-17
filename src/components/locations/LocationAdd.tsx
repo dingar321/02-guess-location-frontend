@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Container, Grid, IconButton, Input, styled, Typography } from '@mui/material'
+import { Avatar, Box, Button, Container, Grid, IconButton, Input, styled, TextField, Typography } from '@mui/material'
 import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
 import React, { useEffect, useState } from 'react'
 import Pin from '../../common/models/Pin';
@@ -95,12 +95,6 @@ const LocationAdd = () => {
         }
     };
 
-    //WIP:
-    const mapRef = React.useRef();
-    const onMapLoad = React.useCallback((map) => {
-        mapRef.current = map;
-    }, [])
-
 
     return (
         <Container style={{ maxWidth: '860px' }} component="form" noValidate={true} onSubmit={handleSubmit} sx={{ my: '2em' }}>
@@ -143,13 +137,18 @@ const LocationAdd = () => {
 
                 </GoogleMap>
             </Grid>
-            <Grid style={{ background: 'white', display: 'flex', float: 'right' }} sx={{ pt: 2 }}>
+            <Grid style={{ background: 'white', display: 'flex', flexDirection: 'row', justifyContent: 'center' }} sx={{ pt: 2 }}>
+                <TextField label="Location name" type="text" required autoComplete='off' placeholder='' variant="outlined" style={{ width: 810, height: 14 }}
+                    onChange={(e) => setLocationName(e.target.value)} />
+            </Grid >
+            <Grid style={{ background: 'white', display: 'flex', float: 'right' }} sx={{ pt: 6 }}>
                 <Button type="submit" style={ButtonMd}>ADD</Button>
             </Grid>
             <Box style={{ color: 'red', textAlign: 'justify', paddingTop: 20 }}>
                 {/* TODO: Move to a dialog <--------------------------------- */}
                 <Typography ref={errorRef} className={errorMessage ? "errorMessage" : "offscreen"} aria-live="assertive" >{errorMessage}</Typography>
             </Box>
+
         </Container >
     )
 }
