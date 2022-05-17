@@ -12,6 +12,7 @@ import Signup from './components/signup/Signup';
 import Signin from './components/signin/Signin';
 import Profile from './components/profile/Profile';
 import Home from './components/home/Home';
+import LocationAdd from './components/locations/LocationAdd';
 
 function App() {
 
@@ -22,7 +23,7 @@ function App() {
           <Header />
           <div className='main'>
 
-            <Home />
+            <LocationAdd />
             {/*
             <Signup />
             */}

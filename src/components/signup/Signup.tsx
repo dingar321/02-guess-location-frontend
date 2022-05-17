@@ -15,6 +15,7 @@ import HamburgerHeader from '../header/HamburgerHeader';
 const RightSideVector = require('../../assets/images/form-right-vector.png') as string;
 const AvatarIcon = require('../../assets/icons/avatar-icon.png') as string;
 const HeaderLogo = require('../../assets/images/header-logo-full.png') as string;
+
 const Signup = () => {
 
     const [errorMessage, setErrorMessage] = useState<string>('');
