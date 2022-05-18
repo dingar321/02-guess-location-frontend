@@ -4,10 +4,12 @@ import { Box } from '@mui/system';
 import ButtonXl from '../buttons/ButtonXl';
 import ButtonLink from '../buttons/ButtonLink';
 import { styled } from '@mui/material/styles';
-import Header from '../header/Header';
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import HamburgerHeader from '../header/HamburgerHeader';
+import { useNavigate } from 'react-router-dom';
+import axios, { Axios } from 'axios';
+import { blob } from 'stream/consumers';
 
 //Image uploads:
 //https://stackoverflow.com/questions/57474348/specify-type-for-file-upload-event-in-react-typescript
@@ -73,7 +75,7 @@ const Signup = () => {
     useEffect(() => {
         if (emailBlurred) {
             setEmailBlurred(false);
-            if (email.length != 0) {
+            if (email.length !== 0) {
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 const isEmailValid = emailRegex.test(email);
                 if (!isEmailValid) {
@@ -94,7 +96,7 @@ const Signup = () => {
     useEffect(() => {
         if (firstNameBlurred) {
             setFirstNameBlurred(false);
-            if (firstName.length != 0) {
+            if (firstName.length !== 0) {
                 const nameRegex = /^[a-zA-Z]{2,99}$/;
                 const isFirstNameValid = nameRegex.test(firstName);
                 if (!isFirstNameValid) {
@@ -116,12 +118,12 @@ const Signup = () => {
 
         if (lastNameBlurred) {
             setLastNameBlurred(false);
-            if (lastName.length != 0) {
+            if (lastName.length !== 0) {
                 const nameRegex = /^[a-zA-Z]{2,255}$/;
                 const isLastNameValid = nameRegex.test(lastName);
                 if (!isLastNameValid) {
                     setLastNameError(true);
-                    setLastNameErrorMsg('Lasr name is invalid');
+                    setLastNameErrorMsg('Last name is invalid');
                     setLastNameValid(false);
                 }
                 if (isLastNameValid) {
@@ -138,7 +140,7 @@ const Signup = () => {
 
         if (passwordBlurred) {
             setPasswordBlurred(false);
-            if (password.length != 0) {
+            if (password.length !== 0) {
                 const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,255}$/;
                 const isPasswordValid = passwordRegex.test(password);
                 if (!isPasswordValid) {
@@ -158,15 +160,15 @@ const Signup = () => {
     //Check if email the email is valid
     useEffect(() => {
         if (passwordConfirmBlurred) {
-            if (passwordConfirm.length != 0) {
+            if (passwordConfirm.length !== 0) {
                 if (passwordValid) {
                     setPasswordConfirmBlurred(false);
-                    if (password != passwordConfirm) {
+                    if (password !== passwordConfirm) {
                         setPasswordConfirmError(true);
                         setPasswordConfirmErrorMsg('Passwords must match');
                         setPasswordConfirmValid(false);
                     }
-                    if (password == passwordConfirm) {
+                    if (password === passwordConfirm) {
                         setPasswordConfirmError(false);
                         setPasswordConfirmErrorMsg('');
                         setPasswordConfirmValid(true);
@@ -183,39 +185,92 @@ const Signup = () => {
 
 
     //Submit
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        if (emailValid == true && firstNameValid == true && lastNameValid == true
-            && passwordValid == true && passwordConfirmValid == true) {
+        if (emailValid === true && firstNameValid === true && lastNameValid === true
+            && passwordValid === true && passwordConfirmValid === true) {
             {/* Provided values are valid */ }
 
-            // -------------------------------------
-            // TODO:When adding the user to the datbase uppercase his first initials 
-            // -------------------------------------
-            console.log(file);
-            console.log('Valid');
+            if (file !== null) {
+                var bodyFormData = new FormData();
+                bodyFormData.append('email', email);
+                bodyFormData.append('firstName', firstName.charAt(0).toUpperCase() + firstName.slice(1));
+                bodyFormData.append('lastName', lastName.charAt(0).toUpperCase() + lastName.slice(1));
+                bodyFormData.append('password', password);
+                bodyFormData.append('passwordConfirm', passwordConfirm);
+                bodyFormData.append('profileImage', file!);
 
-        } else if (email == '' && firstName == '' && lastName == ''
-            && password == '' && passwordConfirm == '') {
+                axios({
+                    method: "post",
+                    url: "http://localhost:3333/auth/signup",
+                    data: bodyFormData,
+                    headers: { "Content-Type": "multipart/form-data" },
+                }).then(function (response) {
+                    //Empty all of the fields
+                    setEmail('');
+                    setFirstName('');
+                    setLastName('');
+                    setPassword('');
+                    setPasswordConfirm('');
+
+                    //After succesfull registration we navigate to singing
+                    navigate("/signin");
+                }).catch(error => {
+                    if (error.response?.status === 400) {
+                        setErrorMessage('Values must be provided in the correct format');
+                    }
+                    else if (error.response?.status === 404) {
+                        setErrorMessage('Not found !');
+                    }
+                    else if (error.response?.status === 409) {
+                        setErrorMessage('User with that email already exists');
+                    }
+                    else if (error.response?.status === 500) {
+                        setErrorMessage('Something unexpected went wrong');
+                    }
+                    else {
+                        setErrorMessage('Registration failed')
+                    }
+                    errorRef.current?.focus();
+                });
+
+                // -------------------------------------
+                // TODO: Check if image is uploaded, we cannot continue without adding it
+                // -------------------------------------
+            } else {
+                setErrorMessage('You must also uploade a profile picture');
+                errorRef.current?.focus();
+            }
+
+
+        } else if (email === '' && firstName === '' && lastName === ''
+            && password === '' && passwordConfirm === '' && !file) {
             {/* Some of the provided values are empty */ }
             setErrorMessage('Fields must not be empty');
             errorRef.current?.focus();
         }
     };
-
     //Remove the input field from showing up
     const Input = styled('input')({
         display: 'none',
     });
+
+    //navigation between pages
+    const navigate = useNavigate();
+    function navigateHome() {
+        navigate("/");
+    }
+    function navigateSignin() {
+        navigate("/signin");
+    }
+
 
     const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files) {
             return;
         }
         let img = e.target.files[0];
-        // handle the input...x
-        console.log(img);
         setFile(img);
         setUploadedFilePath(URL.createObjectURL(img));
     }
@@ -245,7 +300,7 @@ const Signup = () => {
                 <Hidden lgDown>
                     {/* Normal view, display only the form  */}
                     <Grid item xs={12} sm={6} style={{ padding: 10, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }} >
-                        <Typography noWrap> <img src={HeaderLogo} style={{ paddingTop: '20px', paddingLeft: '40px' }} /> </Typography>
+                        <Typography noWrap style={{ paddingLeft: 90, paddingTop: '24px', }} onClick={navigateHome} > <img alt='logo' src={HeaderLogo} /> </Typography>
                         <div>
                             {/* Form */}
                             <Box component="form" noValidate={true} onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -318,7 +373,7 @@ const Signup = () => {
                                 <Button variant="contained" type='submit' style={ButtonXl} sx={{ mt: 8 }}> SIGN UP </Button>
                                 <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: 420 }} sx={{ mt: 1 }}  >
                                     <Typography style={{ color: '#322D38', fontWeight: 400, fontSize: 16 }}> Already have an account? </Typography>
-                                    <Button variant="text" disableRipple style={ButtonLink} > Sign in </Button>
+                                    <Button variant="text" disableRipple style={ButtonLink} type="submit" onClick={navigateSignin} > Sign in </Button>
                                 </Box>
                                 <Box style={{ color: 'red', textAlign: 'justify' }}>
                                     {/* TODO: Move to a dialog <--------------------------------- */}
@@ -341,7 +396,7 @@ const Signup = () => {
                         {/* Hamburger header only shows if we are on a small window size   */}
                         <HamburgerHeader />
                     </Hidden>
-                    <Container style={{ paddingTop: '13em' }}>
+                    <Container style={{ paddingTop: '10em' }}>
                         {/* Form */}
                         <Box component="form" noValidate={true} onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                             <Typography style={{ color: '#233D4D', fontWeight: 500, fontSize: 48 }}> Sign up </Typography>

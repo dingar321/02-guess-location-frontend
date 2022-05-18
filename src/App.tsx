@@ -15,26 +15,44 @@ import Home from './components/home/Home';
 import LocationAdd from './components/locations/LocationAdd';
 import GuessAdd from './components/guess/GuessAdd';
 
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { useEffect } from 'react';
+
+
 function App() {
 
+  useEffect(() => {
+
+  })
+
   return (
-    <ThemeProvider theme={DefaultTheme}>
-      <div className="app" >
-        <div>
-          <Header />
-          <div className='main'>
+    <Router>
+      <ThemeProvider theme={DefaultTheme}>
+        <div className="app" >
+          <div>
+            <Header />
+            <div className='main'>
+              <Routes>
 
-            <GuessAdd />
-            {/*
-            <Signup />
-            */}
+                {/* Public routes */}
+                <Route path="/" element={<Home />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/signin" element={<Signin />} />
 
+                {/* Private routes */}
+
+
+
+                {/* Catch all */}
+                {/*TODO:*/}
+              </Routes>
+
+            </div>
           </div>
-        </div>
-        <Footer />
-      </div >
-    </ThemeProvider >
-
+          <Footer />
+        </div >
+      </ThemeProvider >
+    </Router>
   );
 }
 

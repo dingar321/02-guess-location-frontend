@@ -14,7 +14,7 @@ const Home = () => {
 
     //If user exists
     const [user, setUser] = useState<User>();
-    const [userLogged, setUserLogged] = useState<boolean>(true);
+    const [userLogged, setUserLogged] = useState<boolean>(false);
 
     const cards = [1, 2, 3];
     const cardslocations = [1, 2, 3, 4, 5, 6, 7, 8, 9];
