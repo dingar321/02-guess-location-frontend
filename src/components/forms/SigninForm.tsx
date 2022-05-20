@@ -9,13 +9,12 @@ import TextButton from '../buttons/TextButton';
 import ButtonText from '../buttons/TextButton';
 import PasswordTextField from './inputs/PasswordTextField';
 import RegularTextField from './inputs/RegularTextField';
+import { useRecoilState } from 'recoil'
+import { UserState } from '../../utils/common/UserRecoil';
 
 const SigninForm = () => {
     //navigation between pages
     const navigate = useNavigate();
-
-    //After succesfull registration we navigate to singing
-    const [loggedUser, setLoggedUser] = useState<User | undefined>();
 
     //Error handling
     const [errorMessage, setErrorMessage] = useState<string>('');
@@ -24,7 +23,6 @@ const SigninForm = () => {
     //User provided values
     const [password, setPassword] = useState<string>('');
     const [email, setEmail] = useState<string>('');
-
 
     //Empt error message when changing values form from
     useEffect(() => {
@@ -65,26 +63,9 @@ const SigninForm = () => {
                 //Empty all of the fields
                 setEmail('');
                 setPassword('');
-
-                //Get the user
-                await axios(
-                    {
-                        method: 'POST',
-                        url: 'http://localhost:3333/auth/user',
-                        headers: { 'Content-Type': 'application/json' },
-                        withCredentials: true,
-                    }
-                ).then(response => {
-                    setLoggedUser(response.data);
-                    console.log(response.data);
-                    navigate("/");
-                }).catch(error => {
-                    setErrorMessage('Error getting user')
-                    errorRef.current?.focus();
-                });
-
+                navigate("/");
             }).catch(error => {
-                setErrorMessage('Credentials incorrect !')
+                setErrorMessage('Credentials incorrect')
                 errorRef.current?.focus();
             });
         } else {
@@ -97,8 +78,6 @@ const SigninForm = () => {
                 setPasswordError(true);
                 setPasswordErrorMsg('Field cannot be empty');
             }
-
-
             errorRef.current?.focus();
         }
     };

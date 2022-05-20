@@ -25,7 +25,7 @@ const LoggedIn = () => {
                 </Grid>
                 <Grid container spacing={3} style={{ background: 'white', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
                     {cards.map((card) => (
-                        <div style={{ padding: 5 }}>
+                        <div style={{ padding: 5 }} key={card}>
                             <GuessCard width={420} height={235} />
                         </div>
                     ))}
@@ -52,7 +52,7 @@ const LoggedIn = () => {
                     flexDirection: 'row', justifyContent: 'center'
                 }}>
                     {cardslocations.map((cardslocations) => (
-                        <div style={{ padding: 5 }}>
+                        <div style={{ padding: 5 }} key={cardslocations}>
                             <LocationCard width={420} height={235} />
                         </div>
                     ))}

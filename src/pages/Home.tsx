@@ -1,13 +1,34 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Guest from '../components/home/Guest';
 import Footer from '../components/layouts/footer/Footer';
 import Header from '../components/layouts/header/Header';
 import LoggedIn from '../components/home/LoggedIn';
+import { UserState } from '../utils/common/UserRecoil';
+import User from '../utils/types/User';
+import { useRecoilState } from 'recoil'
 
 const Home = () => {
-    const [userLogged, setUserLogged] = useState<boolean>(false);
 
-    if (!userLogged) {
+    const [loggedUser, setLoggedUser] = useRecoilState<User>(UserState);
+
+    useEffect(() => {
+        //Reload the component
+    }, [loggedUser])
+
+    if (loggedUser) {
+        {/* If logged in  */ }
+        return (
+            <div className="app" >
+                <div>
+                    <Header />
+                    <div>
+                        <LoggedIn />
+                    </div>
+                </div>
+                <Footer />
+            </div >
+        )
+    } else if (!loggedUser) {
         {/* If NOT logged in  */ }
         return (
             <div className="app" >
@@ -21,18 +42,7 @@ const Home = () => {
             </div >
         )
     } else {
-        {/* If logged in  */ }
-        return (
-            <div className="app" >
-                <div>
-                    <Header />
-                    <div>
-                        <LoggedIn />
-                    </div>
-                </div>
-                <Footer />
-            </div >
-        )
+        return <div> Loading </div>
     }
 
 }

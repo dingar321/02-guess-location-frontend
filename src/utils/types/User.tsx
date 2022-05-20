@@ -7,7 +7,7 @@ type User = {
     lastName: string;
     timeRegistered: string;
     s3ImageKey: string;
-    upvotes: number[]
+    guesses: number[]
 }
 
 export default User;

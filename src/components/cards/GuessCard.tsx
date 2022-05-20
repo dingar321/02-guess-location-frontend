@@ -4,7 +4,9 @@ import { Box, ButtonBase, Card, CardContent, CardMedia, createMuiTheme, Typograp
 import { ThemeProvider } from '@emotion/react';
 import TouchRipple from '@mui/material/ButtonBase/TouchRipple';
 import { number } from 'yup';
+import { UserState } from '../../utils/common/UserRecoil';
 import User from '../../utils/types/User';
+import { useRecoilState } from 'recoil'
 
 const poppinsFont = "'Poppins', sans-serif";
 const guessGradient = require('../../assets/filters/GuessGradient.png') as string;
@@ -17,8 +19,7 @@ const GuessCard = ({ width, height }: { width: number, height: number }) => {
     const [cardHeight, setCardHeight] = useState<number>(0);
 
     //If user exists
-    const [user, setUser] = useState<User>();
-    const [userLogged, setUserLogged] = useState<boolean>(false);
+    const [loggedUser, setLoggedUser] = useRecoilState<User>(UserState);
 
     useEffect(() => {
         setCardWidth(width);

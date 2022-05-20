@@ -1,6 +1,8 @@
 import { Button, ButtonBase, Card, CardMedia, IconButton, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
+import { UserState } from '../../utils/common/UserRecoil';
 import User from '../../utils/types/User';
+import { useRecoilState } from 'recoil'
 
 const poppinsFont = "'Poppins', sans-serif";
 const editIcon = require('../../assets/icons/EditIcon.png') as string;
@@ -13,8 +15,7 @@ const LocationCard = ({ width, height }: { width: number, height: number }) => {
     const [cardHeight, setCardHeight] = useState<number>(0);
 
     //If user exists
-    const [user, setUser] = useState<User>();
-    const [userLogged, setUserLogged] = useState<boolean>(true);
+    const [loggedUser, setLoggedUser] = useRecoilState<User>(UserState);
 
     useEffect(() => {
         setCardWidth(width);
@@ -23,7 +24,7 @@ const LocationCard = ({ width, height }: { width: number, height: number }) => {
 
     return (
         <Card style={{ width: cardWidth, height: cardHeight, cursor: 'pointer', borderRadius: 10 }} elevation={1}>
-            {((userLogged)) &&
+            {((loggedUser)) &&
                 <>
                     <CardMedia style={{ width: cardWidth, height: cardHeight, position: 'absolute', borderRadius: 10 }} component="img"
                         image="https://www.museos.com/wp-content/uploads/2021/02/Eiffelturm-Paris6-scaled.jpg" /> {/* <-- Image*/}
@@ -33,7 +34,7 @@ const LocationCard = ({ width, height }: { width: number, height: number }) => {
                 </>
             }
 
-            {((!userLogged)) &&
+            {((!loggedUser)) &&
                 <>
                     <ButtonBase disabled component="div" style={{ width: cardWidth, height: cardHeight, position: "relative" }}>
                         <CardMedia style={{ width: cardWidth, height: cardHeight, position: 'absolute', borderRadius: 10 }} component="img"
