@@ -1,4 +1,5 @@
 import { Box, Grid, Typography } from '@mui/material';
+import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { validateEmail, validateFirstName, validateLastName, validatePassword } from '../../utils/helpers/validation.helpers';
@@ -32,7 +33,6 @@ const SignupForm = () => {
         setErrorMessage('');
     }, [email, firstName, lastName, password, passwordConfirm])
 
-
     //Validation information used to verify inputs
     //email
     const [emailBlurred, setEmailBlurred] = useState<boolean>(false);
@@ -58,6 +58,7 @@ const SignupForm = () => {
 
 
 
+    //Check if email the email is valid
     useEffect(() => {
         if (emailBlurred) {
             setEmailBlurred(false);
@@ -72,81 +73,97 @@ const SignupForm = () => {
                 if (validEmail) {
                     setEmailError(false);
                     setEmailErrorMsg('');
-
-                }
-            }
-            if (firstNameBlurred) {
-                setFirstNameBlurred(false);
-                if (firstName.length !== 0) {
-
-                    const validFirstName = validateFirstName({ firstName: firstName })
-
-                    if (!validFirstName) {
-                        setFirstNameError(true);
-                        setFirstNameErrorMsg('First name is invalid');
-                    }
-                    if (validFirstName) {
-                        setFirstNameError(false);
-                        setFirstNameErrorMsg('');
-                    }
-                }
-            }
-            if (lastNameBlurred) {
-                setLastNameBlurred(false);
-                if (lastName.length !== 0) {
-
-                    const validLastName = validateLastName({ lastName: firstName })
-
-                    if (!validLastName) {
-                        setLastNameError(true);
-                        setLastNameErrorMsg('Last name is invalid');
-                    }
-                    if (validLastName) {
-                        setLastNameError(false);
-                        setLastNameErrorMsg('');
-                    }
-                }
-            }
-            if (passwordBlurred) {
-                setPasswordBlurred(false);
-                if (password.length !== 0) {
-
-                    const validPassword = validatePassword({ password: password })
-
-                    if (!validPassword) {
-                        setPasswordError(true);
-                        setPasswordErrorMsg('Password is invalid');
-                        setPasswordValid(false);
-                    }
-                    if (validPassword) {
-                        setPasswordError(false);
-                        setPasswordErrorMsg('');
-                        setPasswordValid(true);
-                    }
-                }
-            }
-            if (passwordConfirmBlurred) {
-                if (passwordConfirm.length !== 0) {
-                    if (passwordValid) {
-                        setPasswordConfirmBlurred(false);
-                        if (password !== passwordConfirm) {
-                            setPasswordConfirmError(true);
-                            setPasswordConfirmErrorMsg('Passwords must match');
-                        }
-                        if (password === passwordConfirm) {
-                            setPasswordConfirmError(false);
-                            setPasswordConfirmErrorMsg('');
-                        }
-                    }
-                    else {
-                        setPasswordConfirmError(true);
-                        setPasswordConfirmErrorMsg('Passwords is invalid');
-                    }
                 }
             }
         }
+    }, [emailBlurred])
 
-    }, [emailBlurred, firstNameBlurred, lastNameBlurred, passwordBlurred, passwordConfirmBlurred])
+    //Check if email the email is valid
+    useEffect(() => {
+        if (firstNameBlurred) {
+            setFirstNameBlurred(false);
+            if (firstName.length !== 0) {
+
+                const validFirstName = validateFirstName({ firstName: firstName })
+
+                if (!validFirstName) {
+                    setFirstNameError(true);
+                    setFirstNameErrorMsg('First name is invalid');
+                }
+                if (validFirstName) {
+                    setFirstNameError(false);
+                    setFirstNameErrorMsg('');
+                }
+            }
+        }
+    }, [firstNameBlurred])
+
+    //Check if email the email is valid
+    useEffect(() => {
+
+        if (lastNameBlurred) {
+            setLastNameBlurred(false);
+            if (lastName.length !== 0) {
+
+                const validLastName = validateLastName({ lastName: firstName })
+
+                if (!validLastName) {
+                    setLastNameError(true);
+                    setLastNameErrorMsg('Last name is invalid');
+                }
+                if (validLastName) {
+                    setLastNameError(false);
+                    setLastNameErrorMsg('');
+                }
+            }
+        }
+    }, [lastNameBlurred])
+
+    //Check if email the email is valid
+    useEffect(() => {
+
+        if (passwordBlurred) {
+            setPasswordBlurred(false);
+            if (password.length !== 0) {
+
+                const validPassword = validatePassword({ password: password })
+
+                if (!validPassword) {
+                    setPasswordError(true);
+                    setPasswordErrorMsg('Password is invalid');
+                    setPasswordValid(false);
+                }
+                if (validPassword) {
+                    setPasswordError(false);
+                    setPasswordErrorMsg('');
+                    setPasswordValid(true);
+                }
+            }
+        }
+    }, [passwordBlurred])
+
+    //Check if email the email is valid
+    useEffect(() => {
+        if (passwordConfirmBlurred) {
+            if (passwordConfirm.length !== 0) {
+                if (passwordValid) {
+                    setPasswordConfirmBlurred(false);
+                    if (password !== passwordConfirm) {
+                        setPasswordConfirmError(true);
+                        setPasswordConfirmErrorMsg('Passwords must match');
+                    }
+                    if (password === passwordConfirm) {
+                        setPasswordConfirmError(false);
+                        setPasswordConfirmErrorMsg('');
+                    }
+                }
+                else {
+                    setPasswordConfirmError(true);
+                    setPasswordConfirmErrorMsg('Passwords is invalid');
+                }
+            }
+        }
+    }, [passwordConfirmBlurred])
 
     //Submit handle
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -154,7 +171,47 @@ const SignupForm = () => {
         if (email !== '' && firstName !== '' && lastName !== ''
             && password !== '' && passwordConfirm !== '') {
             if (imageUploaded) {
+                var bodyFormData = new FormData();
+                bodyFormData.append('email', email);
+                bodyFormData.append('firstName', firstName.charAt(0).toUpperCase() + firstName.slice(1));
+                bodyFormData.append('lastName', lastName.charAt(0).toUpperCase() + lastName.slice(1));
+                bodyFormData.append('password', password);
+                bodyFormData.append('passwordConfirm', passwordConfirm);
+                bodyFormData.append('profileImage', image!);
 
+                axios({
+                    method: "post",
+                    url: "http://localhost:3333/auth/signup",
+                    data: bodyFormData,
+                    headers: { "Content-Type": "multipart/form-data" },
+                }).then(function (response) {
+                    //Empty all of the fields
+                    setEmail('');
+                    setFirstName('');
+                    setLastName('');
+                    setPassword('');
+                    setPasswordConfirm('');
+
+                    //After succesfull registration we navigate to singing
+                    navigate("/signin");
+                }).catch(error => {
+                    if (error.response?.status === 400) {
+                        setErrorMessage('Values must be provided in the correct format');
+                    }
+                    else if (error.response?.status === 404) {
+                        setErrorMessage('Not found !');
+                    }
+                    else if (error.response?.status === 409) {
+                        setErrorMessage('User with that email already exists');
+                    }
+                    else if (error.response?.status === 500) {
+                        setErrorMessage('Something unexpected went wrong');
+                    }
+                    else {
+                        setErrorMessage('Registration failed')
+                    }
+                    errorRef.current?.focus();
+                });
             }
             else {
                 setErrorMessage('Please upload a profile image !');
@@ -184,21 +241,21 @@ const SignupForm = () => {
 
             <ImageUpload ImagePath={imagePath} onChange={handleImageUpload} />
 
-            <RegularTextField variant='standard' value={email} label='Email' width={420} height={14}
+            <RegularTextField variant='standard' value={email} label='Email' width={420} height={14} onBlur={(e: any) => setEmailBlurred(true)}
                 onChange={(e: any) => setEmail(e.target.value)} sx={{ mt: 8 }} error={emailError} helperText={emailErrorMsg} />
 
             <Grid style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: 420 }} sx={{ mt: 8 }}>
-                <RegularTextField variant='standard' value={firstName} label='First Name' width={200} height={14}
+                <RegularTextField variant='standard' value={firstName} label='First Name' width={200} height={14} onBlur={(e: any) => setFirstNameBlurred(true)}
                     onChange={(e: any) => setFirstName(e.target.value)} sx={{ pb: 4 }} error={firstNameError} helperText={firstNameErrorMsg} />
 
-                <RegularTextField variant='standard' value={lastName} label='Last Name' width={200} height={14}
+                <RegularTextField variant='standard' value={lastName} label='Last Name' width={200} height={14} onBlur={(e: any) => setLastNameBlurred(true)}
                     onChange={(e: any) => setLastName(e.target.value)} sx={{ pb: 4 }} error={lastNameError} helperText={lastNameErrorMsg} />
             </Grid>
 
-            <PasswordTextField variant='standard' value={password} label='Password' width={420} height={14}
+            <PasswordTextField variant='standard' value={password} label='Password' width={420} height={14} onBlur={(e: any) => setPasswordBlurred(true)}
                 onChange={(e: any) => setPassword(e.target.value)} sx={{ mt: 8 }} error={passwordError} helperText={passwordErrorMsg} />
 
-            <PasswordTextField variant='standard' value={passwordConfirm} label='Confirm Password' width={420} height={14}
+            <PasswordTextField variant='standard' value={passwordConfirm} label='Confirm Password' width={420} height={14} onBlur={(e: any) => setPasswordConfirmBlurred(true)}
                 onChange={(e: any) => setPasswordConfirm(e.target.value)} sx={{ mt: 8 }} error={passwordConfirmError} helperText={passwordConfirmErrorMsg} />
 
             <ContainedButton type='submit' buttonText='SIGN IN' width={420} height={40} background="#619B8A" color="#FFFFFF" fontSize={16} fontWeight={400} onClick={null} sx={{ mt: 7 }} />

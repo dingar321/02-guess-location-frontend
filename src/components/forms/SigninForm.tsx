@@ -95,11 +95,11 @@ const SigninForm = () => {
             </Typography>
 
             <Typography style={{ color: '#322D38', fontWeight: 500, fontSize: 16, paddingRight: 370 }} sx={{ mt: 3 }}>Email:</Typography>
-            <RegularTextField variant='outlined' value={email} label='' width={420} height={14}
+            <RegularTextField variant='outlined' value={email} label='' width={420} height={14} onBlur={null}
                 onChange={(e: any) => setEmail(e.target.value)} error={emailError} helperText={emailErrorMsg} sx={{ mt: 1.5 }} />
 
             <Typography style={{ color: '#322D38', fontWeight: 500, fontSize: 16, paddingRight: 340 }} sx={{ mt: 8 }}>Password:</Typography>
-            <PasswordTextField variant='outlined' value={password} label='' width={420} height={14}
+            <PasswordTextField variant='outlined' value={password} label='' width={420} height={14} onBlur={null}
                 onChange={(e: any) => setPassword(e.target.value)} error={passwordError} helperText={passwordErrorMsg} sx={{ mt: 1.5 }} />
 
             <ContainedButton type='submit' buttonText='SIGN IN' width={420} height={40} background="#619B8A" color="#FFFFFF" fontSize={16} fontWeight={400} onClick={null} sx={{ mt: 10 }} />

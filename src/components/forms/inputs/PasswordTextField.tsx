@@ -10,9 +10,9 @@ const standardStyle = {
     }
 }
 
-const PasswordTextField = ({ value, width, height, onChange, variant, sx, label, error, helperText }:
+const PasswordTextField = ({ value, width, height, onChange, variant, sx, label, error, helperText, onBlur }:
     {
-        value: string, width: number, height: number, onChange: any,
+        value: string, width: number, height: number, onChange: any, onBlur: any,
         variant: string, sx: any, label: string, error: boolean, helperText: string
     }) => {
 
@@ -33,7 +33,7 @@ const PasswordTextField = ({ value, width, height, onChange, variant, sx, label,
         return (
             <TextField variant='outlined' label={label} required autoComplete='off'
                 style={{ width: width, height: height }} sx={sx}
-                onChange={onChange} error={error} helperText={helperText}
+                onChange={onChange} error={error} helperText={helperText} onBlur={onBlur}
                 id={"outlined-adornment" + label}
                 type={passwordShow ? "text" : "password"}
                 value={value}
@@ -53,9 +53,9 @@ const PasswordTextField = ({ value, width, height, onChange, variant, sx, label,
         )
     } else {
         return (
-            <TextField variant="standard" label="Password" required autoComplete='off' placeholder=''
+            <TextField variant="standard" label="Password" required autoComplete='off'
                 style={{ width: width, height: height }} sx={sx}
-                onChange={onChange} error={error} helperText={helperText}
+                onChange={onChange} error={error} helperText={helperText} onBlur={onBlur}
                 id={"outlined-adornment" + label}
                 type={passwordShow ? "text" : "password"}
                 value={value}
