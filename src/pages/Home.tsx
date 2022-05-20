@@ -1,10 +1,11 @@
 import { useState } from 'react'
+import Guest from '../components/home/Guest';
 import Footer from '../components/layouts/footer/Footer';
 import Header from '../components/layouts/header/Header';
+import LoggedIn from '../components/home/LoggedIn';
 
 const Home = () => {
-
-    const [userLogged, setUserLogged] = useState<boolean>(false);
+    const [userLogged, setUserLogged] = useState<boolean>(true);
 
     if (!userLogged) {
         {/* If NOT logged in  */ }
@@ -13,7 +14,7 @@ const Home = () => {
                 <div>
                     <Header />
                     <div>
-
+                        <Guest />
                     </div>
                 </div>
                 <Footer />
@@ -26,7 +27,7 @@ const Home = () => {
                 <div>
                     <Header />
                     <div>
-
+                        <LoggedIn />
                     </div>
                 </div>
                 <Footer />

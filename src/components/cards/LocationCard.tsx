@@ -14,7 +14,7 @@ const LocationCard = ({ width, height }: { width: number, height: number }) => {
 
     //If user exists
     const [user, setUser] = useState<User>();
-    const [userLogged, setUserLogged] = useState<boolean>(false);
+    const [userLogged, setUserLogged] = useState<boolean>(true);
 
     useEffect(() => {
         setCardWidth(width);

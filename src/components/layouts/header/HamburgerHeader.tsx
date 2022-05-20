@@ -24,7 +24,7 @@ const HamburgerHeader = () => {
     const [openBurgerMenu, setOpenBurgerMenu] = useState<boolean>(false);
 
     //Setting if user is logged in
-    const [logged, setLogged] = useState<boolean>(true);
+    const [logged, setLogged] = useState<boolean>(false);
 
     return (
         <div>
