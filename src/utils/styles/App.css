@@ -1,0 +1,36 @@
+/* Global style */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+
+* {
+    /* This style is very important: DO NOT DELETE */
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.app {
+    /* This is the top of the page anything under this div is the footer */
+    /* min-height -> makes the footer stay on the bottom of the page */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+body {
+    /* Default font: */
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    /* Default font color: */
+    color: black;
+}
+
+img {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}

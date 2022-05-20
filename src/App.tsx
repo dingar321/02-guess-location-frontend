@@ -1,22 +1,16 @@
 import { ThemeProvider } from '@emotion/react';
-
-//Themes
-import DefaultTheme from './common/styles/default-theme';
-import './common/styles/App.css';
-
-//Components 
-import Header from './components/header/Header';
-import Footer from './components/footer/Footer';
-import Test from './components/test';
-import Signup from './components/signup/Signup';
-import Signin from './components/signin/Signin';
-import Profile from './components/profile/Profile';
-import Home from './components/home/Home';
-import LocationAdd from './components/locations/LocationAdd';
-import GuessAdd from './components/guess/GuessAdd';
-
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useEffect } from 'react';
+
+//Themes
+import DefaultTheme from './utils/styles/default-theme';
+import './utils/styles/App.css';
+import Signin from './pages/Signin';
+import Home from './pages/Home';
+import Signup from './pages/Signup';
+import SignupForm from './components/forms/SignupForm';
+
+//Pages 
 
 
 function App() {
@@ -28,29 +22,14 @@ function App() {
   return (
     <Router>
       <ThemeProvider theme={DefaultTheme}>
-        <div className="app" >
-          <div>
-            <Header />
-            <div className='main'>
-              <Routes>
+        <Routes>
 
-                {/* Public routes */}
-                <Route path="/" element={<Home />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/signin" element={<Signin />} />
+          {/* Public routes */}
+          <Route path="/signin" element={<Signin />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/" element={<Home />} />
 
-                {/* Private routes */}
-
-
-
-                {/* Catch all */}
-                {/*TODO:*/}
-              </Routes>
-
-            </div>
-          </div>
-          <Footer />
-        </div >
+        </Routes>
       </ThemeProvider >
     </Router>
   );
