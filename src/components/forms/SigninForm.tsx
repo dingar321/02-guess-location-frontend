@@ -2,6 +2,7 @@ import { Box, Grid, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import User from '../../utils/types/User';
 import ContainedButton from '../buttons/ContainedButton';
 import ButtonContained from '../buttons/ContainedButton';
 import TextButton from '../buttons/TextButton';
@@ -12,6 +13,9 @@ import RegularTextField from './inputs/RegularTextField';
 const SigninForm = () => {
     //navigation between pages
     const navigate = useNavigate();
+
+    //After succesfull registration we navigate to singing
+    const [loggedUser, setLoggedUser] = useState<User | undefined>();
 
     //Error handling
     const [errorMessage, setErrorMessage] = useState<string>('');
@@ -52,17 +56,33 @@ const SigninForm = () => {
         event.preventDefault();
         if (email !== '' && password !== '') {
             axios({
-                method: "post",
+                method: "POST",
                 url: "http://localhost:3333/auth/signin",
                 data: JSON.stringify({ email, password }),
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true,
-            }).then(function (response) {
+            }).then(async function (response) {
                 //Empty all of the fields
                 setEmail('');
                 setPassword('');
-                //After succesfull registration we navigate to singing
-                navigate("/");
+
+                //Get the user
+                await axios(
+                    {
+                        method: 'POST',
+                        url: 'http://localhost:3333/auth/user',
+                        headers: { 'Content-Type': 'application/json' },
+                        withCredentials: true,
+                    }
+                ).then(response => {
+                    setLoggedUser(response.data);
+                    console.log(response.data);
+                    navigate("/");
+                }).catch(error => {
+                    setErrorMessage('Error getting user')
+                    errorRef.current?.focus();
+                });
+
             }).catch(error => {
                 setErrorMessage('Credentials incorrect !')
                 errorRef.current?.focus();

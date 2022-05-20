@@ -66,7 +66,7 @@ const Guest = () => {
                 </Box>
                 <Grid container spacing={3} style={{ background: 'white', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
                     {cards.map((card) => (
-                        <div style={{ padding: 5 }}>
+                        <div style={{ padding: 5 }} key={card}>
                             <LocationCard width={420} height={235} />
                         </div>
                     ))}

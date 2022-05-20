@@ -5,7 +5,7 @@ import Header from '../components/layouts/header/Header';
 import LoggedIn from '../components/home/LoggedIn';
 
 const Home = () => {
-    const [userLogged, setUserLogged] = useState<boolean>(true);
+    const [userLogged, setUserLogged] = useState<boolean>(false);
 
     if (!userLogged) {
         {/* If NOT logged in  */ }

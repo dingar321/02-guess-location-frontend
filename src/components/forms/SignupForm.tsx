@@ -180,7 +180,7 @@ const SignupForm = () => {
                 bodyFormData.append('profileImage', image!);
 
                 axios({
-                    method: "post",
+                    method: "POST",
                     url: "http://localhost:3333/auth/signup",
                     data: bodyFormData,
                     headers: { "Content-Type": "multipart/form-data" },
