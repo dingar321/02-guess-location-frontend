@@ -7,7 +7,8 @@ import ContainedButton from '../buttons/ContainedButton';
 import TextButton from '../buttons/TextButton';
 import PasswordTextField from './inputs/PasswordTextField';
 import RegularTextField from './inputs/RegularTextField';
-import ImageUpload from './upload/ImageUpload';
+import ProfileImageUpload from './upload/ProfileImageUpload';
+import ImageUpload from './upload/ProfileImageUpload';
 
 
 const SignupForm = () => {
@@ -239,7 +240,7 @@ const SignupForm = () => {
             <Typography style={{ color: '#233D4D', fontWeight: 500, fontSize: 48 }}> Sign up </Typography>
             <Typography style={{ color: '#322D38', fontWeight: 400, fontSize: 16 }}>Your name will appear on posts and your public profile.</Typography>
 
-            <ImageUpload ImagePath={imagePath} onChange={handleImageUpload} />
+            <ProfileImageUpload ImagePath={imagePath} onChange={handleImageUpload} />
 
             <RegularTextField variant='standard' value={email} label='Email' width={420} height={14} onBlur={(e: any) => setEmailBlurred(true)}
                 onChange={(e: any) => setEmail(e.target.value)} sx={{ mt: 8 }} error={emailError} helperText={emailErrorMsg} />

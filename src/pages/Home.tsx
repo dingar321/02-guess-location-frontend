@@ -14,26 +14,6 @@ const Home = () => {
     const [loggedUser, setLoggedUser] = useRecoilState<User>(UserState);
 
     useEffect(() => {
-        //Get the user
-        const fetchLoggedUser = async () => {
-            await axios(
-                {
-                    method: 'POST',
-                    url: 'http://localhost:3333/auth/user',
-                    headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true,
-                }
-            ).then(response => {
-                setLoggedUser(response.data);
-            }).catch(error => {
-                console.log('Signup error: ', error)
-            });
-        }
-        fetchLoggedUser();
-    }, [])
-
-    useEffect(() => {
-        console.log(loggedUser.s3Imagekey);
     }, [loggedUser])
 
     if (loggedUser) {

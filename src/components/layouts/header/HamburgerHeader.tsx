@@ -4,7 +4,7 @@ import { SwipeableDrawer } from '@mui/material'
 import { Divider } from '@mui/material'
 
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import MenuButton from '../../buttons/MenuButton';
 import CloseButton from '../../buttons/CloseButton';
 import HomeButton from '../../buttons/HomeButton';
@@ -65,7 +65,7 @@ const HamburgerHeader = () => {
                     <>
                         <Typography noWrap sx={{ mx: 0, flexGrow: 1 }} onClick={() => navigate("/")}> <img src={HeaderLogo} /> </Typography>
                         <div>
-                            <AddButton onClick={null} sx={{ mr: 5 }} width={40} height={40} />
+                            <AddButton onClick={() => navigate('/add-location')} sx={{ mr: 5 }} width={40} height={40} />
                             <MenuButton onClick={() => setOpenBurgerMenu(true)} sx={{ sm: 1, mx: 5 }} />
                         </div>
                     </>

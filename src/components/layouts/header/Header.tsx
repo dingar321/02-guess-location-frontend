@@ -46,7 +46,7 @@ const Header = () => {
             <Hidden mdDown>
                 {/* Browser */}
 
-                <Toolbar>
+                <Toolbar style={{ background: 'white' }}>
                     <Typography noWrap sx={{ mx: 0, flexGrow: 1 }}  >
                         <img alt='Navbar-logo' src={headerLogo} onClick={() => navigate("/")} />
                     </Typography>
@@ -61,16 +61,16 @@ const Header = () => {
 
                     {((loggedUser)) &&
                         <>
-                            <ButtonText type='button' buttonText='Home' width={100} height={30} color="#233D4D" fontSize={16} fontWeight={500} onClick={() => navigate('/')} sx={{ mr: 1, mt: 0.8 }} />
-                            <ButtonText type='button' buttonText='Profile Settings' width={140} height={30} color="#233D4D" fontSize={16} fontWeight={500} onClick={null} sx={{ mr: 1, mt: 0.8 }} />
-                            <ButtonText type='button' buttonText='Logout' width={100} height={30} color="#233D4D" fontSize={16} fontWeight={500} onClick={logout} sx={{ mr: 1, mt: 0.8 }} />
-                            <ProfileButton onClick={null} sx={{ ml: 0, mr: 1 }} width={40} height={40} />
-                            <div style={{ fontSize: 11 }}>
+                            <ButtonText type='button' buttonText='Home' width={100} height={30} color="#233D4D" fontSize={16} fontWeight={500} onClick={() => navigate('/')} sx={{ mr: 1 }} />
+                            <ButtonText type='button' buttonText='Profile Settings' width={140} height={30} color="#233D4D" fontSize={16} fontWeight={500} onClick={null} sx={{ mr: 1 }} />
+                            <ButtonText type='button' buttonText='Logout' width={100} height={30} color="#233D4D" fontSize={16} fontWeight={500} onClick={logout} sx={{ mr: 1, }} />
+                            <ProfileButton onClick={null} sx={{ mr: 1 }} width={40} height={40} />
+                            <div style={{ fontSize: 11, paddingRight: 0 }}>
                                 <p>
                                     Welcome, <br /> {loggedUser.firstName} {loggedUser.lastName}
                                 </p>
                             </div>
-                            <AddButton onClick={null} sx={{ ml: 3, mr: 3 }} width={40} height={40} />
+                            <AddButton onClick={() => navigate('/add-location')} sx={{ ml: 3, mr: 3 }} width={40} height={40} />
                         </>
                     }
                 </Toolbar>
