@@ -6,7 +6,7 @@ type User = {
     firstName: string;
     lastName: string;
     timeRegistered: string;
-    s3ImageKey: string;
+    s3Imagekey: string;
     guesses: number[]
 }
 

@@ -13,7 +13,6 @@ import axios from 'axios';
 
 //images
 const headerLogo = require('../../../assets/images/HeaderLogo.png') as string;
-const HeaderLogo = require('../../../assets/images/HeaderLogo.png') as string;
 
 const Header = () => {
 
@@ -30,14 +29,13 @@ const Header = () => {
                 {
                     method: 'POST',
                     url: 'http://localhost:3333/auth/logout',
-                    headers: { 'Content-Type': 'application/json' },
                     withCredentials: true,
                 }
             ).then(response => {
                 //When logged out we go back to signin page
                 navigate("/signin");
             }).catch(error => {
-                console.log('error');
+                console.log('error: ', error);
             });
         }
         logoutUser();
@@ -67,7 +65,12 @@ const Header = () => {
                             <ButtonText type='button' buttonText='Profile Settings' width={140} height={30} color="#233D4D" fontSize={16} fontWeight={500} onClick={null} sx={{ mr: 1, mt: 0.8 }} />
                             <ButtonText type='button' buttonText='Logout' width={100} height={30} color="#233D4D" fontSize={16} fontWeight={500} onClick={logout} sx={{ mr: 1, mt: 0.8 }} />
                             <ProfileButton onClick={null} sx={{ ml: 0, mr: 1 }} width={40} height={40} />
-                            <AddButton onClick={null} sx={{ ml: 0, mr: 3 }} width={40} height={40} />
+                            <div style={{ fontSize: 11 }}>
+                                <p>
+                                    Welcome, <br /> {loggedUser.firstName} {loggedUser.lastName}
+                                </p>
+                            </div>
+                            <AddButton onClick={null} sx={{ ml: 3, mr: 3 }} width={40} height={40} />
                         </>
                     }
                 </Toolbar>

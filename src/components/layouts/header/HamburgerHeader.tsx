@@ -38,14 +38,13 @@ const HamburgerHeader = () => {
                 {
                     method: 'POST',
                     url: 'http://localhost:3333/auth/logout',
-                    headers: { 'Content-Type': 'application/json' },
                     withCredentials: true,
                 }
             ).then(response => {
                 //When logged out we go back to signin page
                 navigate("/signin");
             }).catch(error => {
-                console.log('error');
+                console.log('error: ', error);
             });
         }
         logoutUser();
@@ -98,7 +97,7 @@ const HamburgerHeader = () => {
                     <div>
                         <Box sx={{ my: 2, mx: 5, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                             {/* Logged in */}
-                            <BurgerProfileButton sx={null} onClick={null} buttonText='Home' color='#233D4D' firstName={loggedUser.firstName} lastName={loggedUser.lastName} />
+                            <BurgerProfileButton height={48} width={48} sx={null} onClick={null} buttonText='Home' color='#233D4D' firstName={loggedUser.firstName} lastName={loggedUser.lastName} />
                             <BurgerButton sx={null} onClick={() => navigate('/')} buttonText='Home' color='#233D4D' />
                             <BurgerButton sx={null} onClick={null} buttonText='Profile Settings' color='#233D4D' />
                             <BurgerButton sx={null} onClick={logout} buttonText='Logout' color='#619B8A' />
