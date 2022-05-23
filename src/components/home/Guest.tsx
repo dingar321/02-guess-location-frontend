@@ -2,14 +2,38 @@ import { Box, Container, Grid, Hidden, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom';
 import ContainedButton from '../buttons/ContainedButton';
 import LocationCard from '../cards/LocationCard'
+import { MostRecentLocationsHome, UserState } from '../../utils/common/RecoilStates';
+import User from '../../utils/types/User';
+import { useRecoilState } from 'recoil'
+import { useEffect } from 'react';
+import Location from '../../utils/types/Location';
+import axios from 'axios';
+import ErrorIcon from '@mui/icons-material/Error';
 
 const backgroundWorldMap = require('../../assets/images/BackgroundWorldMap.gif') as string;
 
 const Guest = () => {
+
+    //Getting and saving the user to a global state
+    const [loggedUser, setLoggedUser] = useRecoilState<User>(UserState);
+
+    //saving the locked locations
+    const [mostRecentLocations, setMostRecentLocations] = useRecoilState<Location[]>(MostRecentLocationsHome);
+
     //navigation between pages
     const navigate = useNavigate();
 
-    const cards = [1, 2, 3];
+    useEffect(() => {
+        //First we get the most recent locations
+        const fetchMostRecentLocations = async () => {
+            const response = await axios.get('http://localhost:3333/location/list?limit=3');
+            setMostRecentLocations(response.data);
+        }
+        fetchMostRecentLocations();
+    }, [])
+
+    useEffect(() => {
+    }, [loggedUser, mostRecentLocations])
 
     return (
         <Container style={{ maxWidth: 1600 }}>
@@ -64,12 +88,19 @@ const Guest = () => {
                         </Typography>
                     </Hidden>
                 </Box>
-                <Grid container spacing={3} style={{ background: 'white', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-                    {cards.map((card) => (
-                        <div style={{ padding: 5 }} key={card}>
-                            <LocationCard width={420} height={235} />
+                <Grid container spacing={mostRecentLocations.length} style={{ background: 'white', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                    {mostRecentLocations.map(location => (
+                        <div style={{ padding: 5 }} key={location.locationId}>
+                            <LocationCard width={420} height={240}
+                                locationObject={location} />
                         </div>
                     ))}
+                    {(mostRecentLocations.length === 0) &&
+                        <Typography style={{ color: '#b7d164', background: 'white', fontWeight: 400, fontSize: 13, textAlign: 'center' }}   >
+                            <ErrorIcon /><br />
+                            There are currenty no posts available...
+                        </Typography>
+                    }
                 </Grid>
                 <Grid style={{ textAlign: 'center' }} sx={{ pt: 4, mb: 6 }}>
                     <ContainedButton type='button' buttonText='SIGN IN' width={137} height={40} background="#619B8A" color="#FFFFFF"

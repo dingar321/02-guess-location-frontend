@@ -1,9 +1,10 @@
 import { type } from "@testing-library/user-event/dist/type";
 import { StringifyOptions } from "querystring";
 import User from "./User";
+import Location from "./Location";
 
 type Guess = {
-    errorDistance: number,
+    errorDistanceKm: number,
     timePosted: string,
     userTk: User,
     locationTk: Location,

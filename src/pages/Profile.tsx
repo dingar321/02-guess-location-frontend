@@ -27,11 +27,12 @@ const Profile = () => {
                     </Typography>
                 </Grid>
                 <Grid container spacing={4} style={{ background: 'white', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                    {/*
                     {cards.map((card) => (
                         <div style={{ padding: 5 }}>
                             <GuessCard width={310} height={175} />
                         </div>
-                    ))}
+                    ))}*/}
                 </Grid>
                 <Grid style={{ textAlign: 'center' }} sx={{ pt: 4 }}>
                     <Button> LOAD MORE </Button>
@@ -45,11 +46,13 @@ const Profile = () => {
                     </Typography>
                 </Grid>
                 <Grid container spacing={4} style={{ background: 'white', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                    {/*
                     {cards.map((card) => (
                         <div style={{ padding: 5 }}>
                             <LocationCard width={310} height={175} />
                         </div>
                     ))}
+                    */}
                 </Grid>
                 <Grid style={{ textAlign: 'center' }} sx={{ pt: 4 }}>
                     <Button> LOAD MORE </Button>

@@ -3,7 +3,7 @@ import React from 'react'
 import PersonIcon from '@mui/icons-material/Person';
 import { useRecoilState } from 'recoil'
 import User from '../../utils/types/User';
-import { UserState } from '../../utils/common/UserRecoil';
+import { UserState } from '../../utils/common/RecoilStates';
 
 
 const ProfileButton = ({ onClick, sx, width, height }:

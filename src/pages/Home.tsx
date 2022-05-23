@@ -3,10 +3,11 @@ import Guest from '../components/home/Guest';
 import Footer from '../components/layouts/footer/Footer';
 import Header from '../components/layouts/header/Header';
 import LoggedIn from '../components/home/LoggedIn';
-import { UserState } from '../utils/common/UserRecoil';
+import { MostRecentLocationsHome, UserState } from '../utils/common/RecoilStates';
 import User from '../utils/types/User';
 import { useRecoilState } from 'recoil'
 import axios from 'axios';
+import Location from '../utils/types/Location';
 
 const Home = () => {
 
@@ -16,7 +17,7 @@ const Home = () => {
     useEffect(() => {
     }, [loggedUser])
 
-    if (loggedUser) {
+    if (loggedUser.userId !== 0) {
         {/* If logged in  */ }
         return (
             <div className="app" >
@@ -29,7 +30,7 @@ const Home = () => {
                 <Footer />
             </div >
         )
-    } else if (!loggedUser) {
+    } else if (loggedUser.userId === 0) {
         {/* If NOT logged in  */ }
         return (
             <div className="app" >

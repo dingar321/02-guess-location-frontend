@@ -15,7 +15,7 @@ import BurgerProfileButton from '../../buttons/BurgerProfileButton';
 import AddButton from '../../buttons/AddButton';
 import { useRecoilState } from 'recoil'
 import User from '../../../utils/types/User';
-import { UserState } from '../../../utils/common/UserRecoil';
+import { UserState } from '../../../utils/common/RecoilStates';
 import axios from 'axios';
 
 const HeaderLogo = require('../../../assets/images/HeaderLogo.png') as string;
@@ -42,6 +42,15 @@ const HamburgerHeader = () => {
                 }
             ).then(response => {
                 //When logged out we go back to signin page
+                setLoggedUser({
+                    userId: 0,
+                    email: '',
+                    firstName: '',
+                    lastName: '',
+                    timeRegistered: '',
+                    s3Imagekey: '',
+                    guesses: [],
+                });
                 navigate("/signin");
             }).catch(error => {
                 console.log('error: ', error);
@@ -54,14 +63,14 @@ const HamburgerHeader = () => {
         <div>
             <AppBar sx={{ pt: 2, px: 0, padding: 3, heigth: 400, display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', background: 'white' }} component={Paper} elevation={2}>
 
-                {((!loggedUser)) &&
+                {((loggedUser.userId === 0)) &&
                     <>
                         <Typography noWrap sx={{ mx: 0, flexGrow: 1 }} onClick={() => navigate("/")}> <img src={HeaderLogo} /> </Typography>
                         <MenuButton onClick={() => setOpenBurgerMenu(true)} sx={{ sm: 1, mx: 5 }} />
                     </>
                 }
 
-                {((loggedUser)) &&
+                {((loggedUser.userId !== 0)) &&
                     <>
                         <Typography noWrap sx={{ mx: 0, flexGrow: 1 }} onClick={() => navigate("/")}> <img src={HeaderLogo} /> </Typography>
                         <div>

@@ -2,7 +2,7 @@ import { ThemeProvider } from '@emotion/react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import User from './utils/types/User';
-import { UserState } from './utils/common/UserRecoil';
+import { UserGuesses, UserState } from './utils/common/RecoilStates';
 import { useRecoilState } from 'recoil'
 import { Storage } from 'aws-amplify';
 
@@ -16,12 +16,14 @@ import Home from './pages/Home';
 import Signup from './pages/Signup';
 import axios from 'axios';
 import LocationAdd from './pages/LocationAdd';
+import GuessAdd from './pages/GuessAdd';
 
 
 function App() {
 
   //Getting and saving the user to a global state
   const [loggedUser, setLoggedUser] = useRecoilState<User>(UserState);
+  const [userGuesses, setUserGuesses] = useRecoilState<number[]>(UserGuesses);
 
   useEffect(() => {
     //Get the user
@@ -35,8 +37,9 @@ function App() {
         }
       ).then(response => {
         setLoggedUser(response.data);
+        setUserGuesses(response.data.guesses);
       }).catch(error => {
-        console.log('Signup error: ', error)
+        //console.log('Signup error: ', error)
       });
     }
     fetchLoggedUser();
@@ -55,6 +58,7 @@ function App() {
 
           {/* Private routes */}
           <Route path="/add-location" element={<LocationAdd />} />
+          <Route path="/add-guess/" element={<GuessAdd />} />
 
           {/* Catch all routes */}
 

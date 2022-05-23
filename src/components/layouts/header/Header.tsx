@@ -8,7 +8,7 @@ import AddButton from '../../buttons/AddButton';
 import HamburgerHeader from './HamburgerHeader';
 import { useRecoilState } from 'recoil'
 import User from '../../../utils/types/User';
-import { UserState } from '../../../utils/common/UserRecoil';
+import { UserState } from '../../../utils/common/RecoilStates';
 import axios from 'axios';
 
 //images
@@ -33,6 +33,15 @@ const Header = () => {
                 }
             ).then(response => {
                 //When logged out we go back to signin page
+                setLoggedUser({
+                    userId: 0,
+                    email: '',
+                    firstName: '',
+                    lastName: '',
+                    timeRegistered: '',
+                    s3Imagekey: '',
+                    guesses: [],
+                });
                 navigate("/signin");
             }).catch(error => {
                 console.log('error: ', error);
@@ -51,7 +60,7 @@ const Header = () => {
                         <img alt='Navbar-logo' src={headerLogo} onClick={() => navigate("/")} />
                     </Typography>
 
-                    {((!loggedUser)) &&
+                    {((loggedUser.userId === 0)) &&
                         <>
                             <ButtonText type='button' buttonText='Sign in' width={80} height={30} color="#233D4D" fontSize={16} fontWeight={500} onClick={() => navigate("/signin")} sx={null} />
                             <Typography sx={{ color: '#233D4D', fontWeight: 'normal', fontSize: '16px', lineHeight: '19px', }} >or</Typography>
@@ -59,7 +68,7 @@ const Header = () => {
                         </>
                     }
 
-                    {((loggedUser)) &&
+                    {((loggedUser.userId !== 0)) &&
                         <>
                             <ButtonText type='button' buttonText='Home' width={100} height={30} color="#233D4D" fontSize={16} fontWeight={500} onClick={() => navigate('/')} sx={{ mr: 1 }} />
                             <ButtonText type='button' buttonText='Profile Settings' width={140} height={30} color="#233D4D" fontSize={16} fontWeight={500} onClick={null} sx={{ mr: 1 }} />

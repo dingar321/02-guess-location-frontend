@@ -10,7 +10,7 @@ import ButtonText from '../buttons/TextButton';
 import PasswordTextField from './inputs/PasswordTextField';
 import RegularTextField from './inputs/RegularTextField';
 import { useRecoilState } from 'recoil'
-import { UserState } from '../../utils/common/UserRecoil';
+import { UserState } from '../../utils/common/RecoilStates';
 
 const SigninForm = () => {
     //navigation between pages

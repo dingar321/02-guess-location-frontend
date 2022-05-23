@@ -3,7 +3,7 @@ import React from 'react'
 import PersonIcon from '@mui/icons-material/Person';
 import { useRecoilState } from 'recoil'
 import User from '../../utils/types/User';
-import { UserState } from '../../utils/common/UserRecoil';
+import { UserState } from '../../utils/common/RecoilStates';
 
 const BurgerProfileButton = ({ onClick, sx, buttonText, color, firstName, lastName, width, height }:
     { onClick: any, sx: any, buttonText: string, color: string, firstName: string, lastName: string, width: number, height: number }) => {
