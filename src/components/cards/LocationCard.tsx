@@ -1,12 +1,13 @@
 import { Button, ButtonBase, Card, CardMedia, IconButton, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { AlreadyGuessed, SelectedLocation, SelectedLocationsBestGuesses, UserGuesses, UserState } from '../../utils/common/RecoilStates';
+import { AlreadyGuessed, GuessedCoordinates, OriginalCoordinates, SelectedLocation, SelectedLocationsBestGuesses, SelectedLocationUsersGuess, UserGuesses, UserState } from '../../utils/common/RecoilStates';
 import User from '../../utils/types/User';
 import { useRecoilState } from 'recoil'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Location from '../../utils/types/Location';
 import Guess from '../../utils/types/Guess';
+import Pin from '../../utils/types/Pin';
 
 const poppinsFont = "'Poppins', sans-serif";
 const editIcon = require('../../assets/icons/EditIcon.png') as string;
@@ -33,6 +34,11 @@ const LocationCard = ({ width, height, locationObject }:
     const [loggedUser, setLoggedUser] = useRecoilState<User>(UserState);
     //Users guesses
     const [userGuesses, setUserGuesses] = useRecoilState<number[]>(UserGuesses);
+    //Getting the specified locations guess by the logged user
+    const [guess, setGuess] = useRecoilState<Guess>(SelectedLocationUsersGuess);
+    //If the location has been guessed we need to get the guessed coordniates
+    const [originalCoordinates, setOriginalCoordinates] = useRecoilState<Pin>(OriginalCoordinates);
+    const [guessedCoordinates, setGuessedCoordinates] = useRecoilState<Pin>(GuessedCoordinates);
 
     useEffect(() => {
         setCardWidth(width);
@@ -70,6 +76,24 @@ const LocationCard = ({ width, height, locationObject }:
                 setAlreadyGuessed(false);
             }
         });
+
+        //Preloading the specific locations guess by the user
+        const fetchLocationUsersGuess = async () => {
+            const url = `http://localhost:3333/guess/users-location-guess/${locationObject.locationId}`
+            axios({
+                method: "GET",
+                url: url,
+                withCredentials: true,
+            }).then(async function (response) {
+                //save the guessed coordinates
+                setGuess(response.data)
+                setGuessedCoordinates({ lat: response.data.latitude as number, lng: response.data.longitude as number });
+                setOriginalCoordinates({ lat: response.data.locationTk.latitude as number, lng: response.data.locationTk.longitude as number });
+            }).catch(error => {
+                console.log(error);
+            });
+        }
+        fetchLocationUsersGuess();
 
         navigate('/add-guess/?' + locationObject.locationId);
     }

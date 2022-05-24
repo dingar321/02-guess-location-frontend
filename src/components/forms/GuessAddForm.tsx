@@ -5,13 +5,14 @@ import Pin from '../../utils/types/Pin';
 import GuessCard from '../cards/GuessCard';
 import UserGuessCard from '../cards/UserGuessCard';
 import Maps from '../map/Maps';
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useSetRecoilState } from 'recoil'
 import { useNavigate } from 'react-router-dom';
 import Location from '../../utils/types/Location';
-import { AlreadyGuessed, SelectedLocation, SelectedLocationsBestGuesses, UserGuesses, UserState } from '../../utils/common/RecoilStates';
+import { AlreadyGuessed, GuessedCoordinates, OriginalCoordinates, SelectedLocation, SelectedLocationsBestGuesses, SelectedLocationUsersGuess, UserGuesses, UserState } from '../../utils/common/RecoilStates';
 import Guess from '../../utils/types/Guess';
 import ErrorIcon from '@mui/icons-material/Error';
 import User from '../../utils/types/User';
+import MapsDirection from '../map/MapsDirection';
 
 const GuessAddForm = () => {
 
@@ -34,6 +35,11 @@ const GuessAddForm = () => {
     const [loggedUser, setLoggedUser] = useRecoilState<User>(UserState);
     //Users guesses
     const [userGuesses, setUserGuesses] = useRecoilState<number[]>(UserGuesses);
+    //Getting the specified locations guess by the logged user
+    const [guess, setGuess] = useRecoilState<Guess>(SelectedLocationUsersGuess);
+    //If the location has been guessed we need to get the guessed coordniates
+    const [originalCoordinates, setOriginalCoordinates] = useRecoilState<Pin>(OriginalCoordinates);
+    const [guessedCoordinates, setGuessedCoordinates] = useRecoilState<Pin>(GuessedCoordinates);
 
     //If the page refreshes
     useEffect(() => {
@@ -58,7 +64,7 @@ const GuessAddForm = () => {
         fetchMostRecentLocation();
 
         //Reloading the personal best guesses for the location
-        const fetchPersonalGusess = async () => {
+        const fetchLocationsGuesses = async () => {
             const url = `http://localhost:3333/guess/for-location?locationId=${locationId}&limit=12`
             axios({
                 method: "GET",
@@ -71,7 +77,7 @@ const GuessAddForm = () => {
                 console.log(error);
             });
         }
-        fetchPersonalGusess();
+        fetchLocationsGuesses();
 
         //Reloading and checking if the user already guessed the location
         const fetchLoggedUser = async () => {
@@ -94,31 +100,66 @@ const GuessAddForm = () => {
             });
         }
         fetchLoggedUser();
+
+        //Getting the specific locations guess by the user
+        const fetchLocationUsersGuess = async () => {
+            const url = `http://localhost:3333/guess/users-location-guess/${locationId}`
+            axios({
+                method: "GET",
+                url: url,
+                withCredentials: true,
+            }).then(async function (response) {
+                //save the guessed coordinates
+                setGuess(response.data)
+                setGuessedCoordinates({ lat: response.data.latitude as number, lng: response.data.longitude as number });
+                setOriginalCoordinates({ lat: response.data.locationTk.latitude as number, lng: response.data.locationTk.longitude as number });
+            }).catch(error => {
+                console.log(error);
+            });
+        }
+        fetchLocationUsersGuess();
     }, [])
 
-    /*
     //reload everything if changes
     useEffect(() => {
-        if (alreadyGuessed) {
-            //Reloading the personal best guesses for the location
-            const fetchPersonalGusess = async () => {
-                const url = `http://localhost:3333/guess/for-location?locationId=${locationId}&limit=12`
-                axios({
-                    method: "GET",
-                    url: url,
-                    headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true,
-                }).then(async function (response) {
-                    setSelectedLocationsBestGuesses(response.data);
-                }).catch(error => {
-                    console.log(error);
-                });
-            }
-            fetchPersonalGusess();
-        }
+        //Getting the specific location
+        const urlLocationId = window.location.href;
+        const locationId: number = Number(urlLocationId.split('?').pop());
 
+        //Getting the specific locations guess by the user
+        const fetchLocationUsersGuess = async () => {
+            const url = `http://localhost:3333/guess/users-location-guess/${locationId}`
+            axios({
+                method: "GET",
+                url: url,
+                withCredentials: true,
+            }).then(async function (response) {
+                //save the guessed coordinates
+                setGuess(response.data)
+                setGuessedCoordinates({ lat: response.data.latitude as number, lng: response.data.longitude as number });
+                setOriginalCoordinates({ lat: response.data.locationTk.latitude as number, lng: response.data.locationTk.longitude as number });
+            }).catch(error => {
+                console.log(error);
+            });
+        }
+        fetchLocationUsersGuess();
+
+        //Reloading the personal best guesses for the location
+        const fetchLocationsGuesses = async () => {
+            const url = `http://localhost:3333/guess/for-location?locationId=${locationId}&limit=12`
+            axios({
+                method: "GET",
+                url: url,
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true,
+            }).then(async function (response) {
+                setSelectedLocationsBestGuesses(response.data);
+            }).catch(error => {
+                console.log(error);
+            });
+        }
+        fetchLocationsGuesses();
     }, [alreadyGuessed])
-    */
 
     //setting location after selecting a location on the map
     useEffect(() => {
@@ -143,8 +184,12 @@ const GuessAddForm = () => {
         if (coordinates.lat != 0.000000 && coordinates.lng != 0.000000) {
             {/* Provided values are valid */ }
             var bodyFormData = new FormData();
+            bodyFormData.append('locationName', locationName);
             bodyFormData.append('latitude', coordinates.lat as any);
             bodyFormData.append('longitude', coordinates.lng as any);
+
+            //For testing
+            //console.log('Added guesses cords: ', coordinates.lat, coordinates.lng);
 
             axios({
                 method: "POST",
@@ -172,7 +217,7 @@ const GuessAddForm = () => {
 
     return (
         <Container style={{ maxWidth: 1400 }} component="form" noValidate={true} onSubmit={handleSubmit} sx={{ my: '0em' }}>
-            <Grid container direction="row" style={{ display: 'flex', background: 'red' }}>
+            <Grid container direction="row" style={{ display: 'flex', background: 'white' }}>
                 {/* First column */}
                 <Grid item xs={8} style={{ background: 'white' }}>
 
@@ -204,7 +249,7 @@ const GuessAddForm = () => {
                                 }} />
                             </Grid>
 
-                            <Grid style={{ background: 'red', width: '100%' }} sx={{ mt: 8 }}>
+                            <Grid style={{ background: 'white', width: '100%' }} sx={{ mt: 8 }}>
                                 <Button type='submit' style={{ float: 'right', width: 137, height: 40, background: "#619B8A", color: "#FFFFFF", fontSize: 16, fontWeight: 400 }}>GUESS</Button>
                             </Grid>
 
@@ -216,10 +261,10 @@ const GuessAddForm = () => {
                     }
                     {((alreadyGuessed)) &&
                         <Grid style={{ background: 'white', display: 'flex', flexDirection: 'row', }}>
-                            <Typography>
-                                The error distance between the posted location and your guess is: <span style={{ fontWeight: 500, color: '#619B8A' }}>"231 m"</span> <br />
-                                The photo was taken in <span style={{ fontWeight: 500, color: '#619B8A' }}> "{selectedLocation.locationName} "</span>.
-                            </Typography>
+                            {/* 
+
+                            */}
+                            <MapsDirection />
                         </Grid>
                     }
                 </Grid>

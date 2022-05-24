@@ -10,7 +10,7 @@ import ButtonText from '../buttons/TextButton';
 import PasswordTextField from './inputs/PasswordTextField';
 import RegularTextField from './inputs/RegularTextField';
 import { useRecoilState } from 'recoil'
-import { UserState } from '../../utils/common/RecoilStates';
+import { UserGuesses, UserState } from '../../utils/common/RecoilStates';
 
 const SigninForm = () => {
     //navigation between pages
@@ -23,6 +23,10 @@ const SigninForm = () => {
     //User provided values
     const [password, setPassword] = useState<string>('');
     const [email, setEmail] = useState<string>('');
+
+    //Getting and saving the user to a global state
+    const [loggedUser, setLoggedUser] = useRecoilState<User>(UserState);
+    const [userGuesses, setUserGuesses] = useRecoilState<number[]>(UserGuesses);
 
     //Empt error message when changing values form from
     useEffect(() => {
@@ -63,6 +67,22 @@ const SigninForm = () => {
                 //Empty all of the fields
                 setEmail('');
                 setPassword('');
+
+                await axios(
+                    {
+                        //Get the user before we change to home 
+                        method: 'POST',
+                        url: 'http://localhost:3333/auth/user',
+                        headers: { 'Content-Type': 'application/json' },
+                        withCredentials: true,
+                    }
+                ).then(response => {
+                    setLoggedUser(response.data);
+                    setUserGuesses(response.data.guesses);
+                }).catch(error => {
+                    //console.log('Signup error: ', error)
+                });
+
                 navigate("/");
             }).catch(error => {
                 setErrorMessage('Credentials incorrect')

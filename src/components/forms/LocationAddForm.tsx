@@ -34,6 +34,7 @@ const LocationAddForm = () => {
                 //Getting the location name
                 setLocationName(response.data.results[2].formatted_address)
             }).catch(error => {
+                setLocationName('Unknown');
                 console.error('Error: ', error);
             });
         }
@@ -52,6 +53,9 @@ const LocationAddForm = () => {
             bodyFormData.append('latitude', coordinates.lat as any);
             bodyFormData.append('longitude', coordinates.lng as any);
             bodyFormData.append('locationImage', image);
+
+            //For testing
+            //console.log('Added locations cords: ', coordinates.lat, coordinates.lng);
 
             axios({
                 method: "POST",

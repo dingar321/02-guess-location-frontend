@@ -96,7 +96,7 @@ const Guest = () => {
                         </div>
                     ))}
                     {(mostRecentLocations.length === 0) &&
-                        <Typography style={{ color: '#b7d164', background: 'white', fontWeight: 400, fontSize: 13, textAlign: 'center' }}   >
+                        <Typography style={{ color: '#619B8A', background: 'white', fontWeight: 400, fontSize: 13, textAlign: 'center' }}   >
                             <ErrorIcon /><br />
                             There are currenty no posts available...
                         </Typography>

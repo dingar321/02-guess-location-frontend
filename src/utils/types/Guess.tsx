@@ -5,6 +5,9 @@ import Location from "./Location";
 
 type Guess = {
     errorDistanceKm: number,
+    locationName: string,
+    latitude: number,
+    longitude: number,
     timePosted: string,
     userTk: User,
     locationTk: Location,

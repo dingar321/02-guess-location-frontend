@@ -1,7 +1,7 @@
 import { Box, Button, Container, Grid, Hidden, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import OutlinedButton from '../buttons/OutlinedButton';
-import { MostRecentLocationsLogged, PersonalBestGuessesLogged, UserGuesses, UserState } from '../../utils/common/RecoilStates';
+import { MostRecentLocationsLogged, PersonalBestGuessesLogged, UserState } from '../../utils/common/RecoilStates';
 import User from '../../utils/types/User';
 import { useRecoilState } from 'recoil'
 import GuessCard from '../cards/GuessCard';
@@ -10,54 +10,41 @@ import axios from 'axios';
 import Location from '../../utils/types/Location';
 import Guess from '../../utils/types/Guess';
 import ErrorIcon from '@mui/icons-material/Error';
+import { PaginateNumberBestGuesses, PaginateNumberLocations } from '../../utils/common/RecoilPaginationStates';
 
 const LoggedIn = () => {
 
-    //Getting and saving the user to a global state
+    //User state
     const [loggedUser, setLoggedUser] = useRecoilState<User>(UserState);
 
-
-    //saving the locaitons
+    //Location array and pagination states
     const [mostRecentLocationsLogged, setMostRecentLocationsLogged] = useRecoilState<Location[]>(MostRecentLocationsLogged);
-    const [loadMoreLocations, setLoadMoreLocations] = useState<boolean>(false);
-    const [paginateNumberLocations, setPaginateNumberLocations] = useState<number>(3);
+    const [paginateNumberLocations, setPaginateNumberLocations] = useRecoilState<number>(PaginateNumberLocations);
 
-    //Saving the persnoal guesses
+    //Best guesses array and pagination states
     const [personalBestGuesses, setPersonalBestGuesses] = useRecoilState<Guess[]>(PersonalBestGuessesLogged);
     const [loadMoreBestGuesses, setLoadMoreBestGuesses] = useState<boolean>(false);
-    const [paginateNumberBestGuesses, setPaginateNumbetBestGuesses] = useState<number>(3);
+    const [paginateNumberBestGuesses, setPaginateNumbetBestGuesses] = useRecoilState<number>(PaginateNumberBestGuesses);
 
     useEffect(() => {
-        //First we get the most recent locations
-        const fetchMostRecentPosts = async () => {
+        //We get the locations
+        const fetchMostRecentLocations = async () => {
             const url = 'http://localhost:3333/location/list?limit=' + paginateNumberLocations as string;
-            const response = await axios.get(url);
-
-            //We need to remove the logged users locations and all of his already guessed locations
-            const locationArray: Location[] = response.data;
-            for (var i = locationArray.length - 1; i >= 0; --i) {
-                //Removes logged users location from the array!
-                if (locationArray[i].userTk.userId === loggedUser.userId) {
-                    locationArray.splice(i, 1);
-                }
-            }
-
-            const guessesArray: number[] = loggedUser.guesses;
-            for (var i = locationArray.length - 1; i >= 0; --i) {
-                for (var j = guessesArray.length - 1; j >= 0; --j) {
-                    //Removes the already guessed locations from the array
-                    if (locationArray[i].locationId === guessesArray[j]) {
-                        locationArray.splice(i, 1);
-                    }
-                }
-            }
-
-            setMostRecentLocationsLogged(locationArray);
+            axios({
+                method: "GET",
+                url: url,
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true,
+            }).then(async function (response) {
+                console.log('Initial Call: ', url);
+                setPaginateNumberLocations(paginateNumberBestGuesses + 3)
+                setMostRecentLocationsLogged(response.data);
+            }).catch(error => {
+                console.log(error);
+            });
         }
-        fetchMostRecentPosts();
-
-        //Personal best guesses
-        const fetchPersonalGusess = async () => {
+        //We get the best guesses
+        const fetchPersonalGusses = async () => {
             const url = 'http://localhost:3333/guess/for-user?limit=' + paginateNumberBestGuesses as string;
             axios({
                 method: "GET",
@@ -65,78 +52,55 @@ const LoggedIn = () => {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true,
             }).then(async function (response) {
+                console.log('Initial Call: ', url);
+                setPaginateNumbetBestGuesses(paginateNumberBestGuesses + 3)
                 setPersonalBestGuesses(response.data);
             }).catch(error => {
                 console.log(error);
             });
         }
-        fetchPersonalGusess();
+
+        //Excecute the calls 
+        fetchPersonalGusses();
+        fetchMostRecentLocations();
     }, [])
 
     useEffect(() => {
 
     }, [mostRecentLocationsLogged, personalBestGuesses])
 
-    /* -------------- */
-
-    //Get more best guesses
-    useEffect(() => {
-        if (loadMoreBestGuesses) {
-            setLoadMoreBestGuesses(false);
-            setPaginateNumbetBestGuesses(paginateNumberBestGuesses + 3)
-            //Personal best guesses
-            const fetchPersonalGusess = async () => {
-                const url = 'http://localhost:3333/guess/for-user?limit=' + paginateNumberBestGuesses as string;
-                axios({
-                    method: "GET",
-                    url: url,
-                    headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true,
-                }).then(async function (response) {
-                    setPersonalBestGuesses(response.data);
-                }).catch(error => {
-                    console.log(error);
-                });
-            }
-            fetchPersonalGusess();
-        }
-    }, [loadMoreBestGuesses])
-
-    //Get more locations
-    useEffect(() => {
-        if (loadMoreLocations) {
-            setLoadMoreLocations(false);
+    const LoadMoreLocations = () => {
+        //When pressed we load more locations. (number of specified in the pagination state)
+        const url = 'http://localhost:3333/location/list?limit=' + paginateNumberLocations as string;
+        axios({
+            method: "GET",
+            url: url,
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true,
+        }).then(async function (response) {
+            console.log('Additional Call: ', url);
             setPaginateNumberLocations(paginateNumberBestGuesses + 3)
-            //Locatios
-            const fetchMostRecentLocations = async () => {
-                const url = 'http://localhost:3333/location/list?limit=' + paginateNumberBestGuesses as string;
-                const response = await axios.get(url);
+            setMostRecentLocationsLogged(response.data);
+        }).catch(error => {
+            console.log(error);
+        });
+    }
 
-                const locationArray: Location[] = response.data;
-
-                for (var i = locationArray.length - 1; i >= 0; --i) {
-                    //Removes logged users locatiaon posts!
-                    if (locationArray[i].userTk.userId === loggedUser.userId) {
-                        locationArray.splice(i, 1);
-                    }
-                }
-
-                for (var i = locationArray.length - 1; i >= 0; --i) {
-                    for (var j = loggedUser.guesses.length - 1; i >= 0; --i) {
-                        //Removes logged users locatiaon posts!
-                        if (locationArray[i].userTk.userId === loggedUser.guesses[j]) {
-                            locationArray.splice(i, 1);
-                        }
-                    }
-                }
-                setMostRecentLocationsLogged(locationArray);
-            }
-            fetchMostRecentLocations();
-        }
-    }, [loadMoreLocations])
-
-    useEffect(() => {
-    }, [loggedUser])
+    const LoadMorePersonalBestGuesses = () => {
+        const url = 'http://localhost:3333/guess/for-user?limit=' + paginateNumberBestGuesses as string;
+        axios({
+            method: "GET",
+            url: url,
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true,
+        }).then(async function (response) {
+            console.log('Additional Call: ', url);
+            setPaginateNumbetBestGuesses(paginateNumberBestGuesses + 3)
+            setPersonalBestGuesses(response.data);
+        }).catch(error => {
+            console.log(error);
+        });
+    }
 
 
 
@@ -152,7 +116,7 @@ const LoggedIn = () => {
                         Your personal best guesses appear here. <br /> Go on and try to beat your personal records or set a new one!
                     </Typography>
                 </Grid>
-                <Grid container spacing={personalBestGuesses.length} style={{ background: 'white', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                <Grid container spacing={personalBestGuesses.length} style={{ paddingTop: 20, background: 'white', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
                     {personalBestGuesses.map((guess) => (
                         <div style={{ padding: 5 }} key={guess.guessId}>
                             <GuessCard width={420} height={240}
@@ -160,7 +124,7 @@ const LoggedIn = () => {
                         </div>
                     ))}
                     {(personalBestGuesses.length === 0) &&
-                        <Typography style={{ color: '#b7d164', background: 'white', fontWeight: 400, fontSize: 13, textAlign: 'center' }}   >
+                        <Typography style={{ color: '#619B8A', background: 'white', fontWeight: 400, fontSize: 13, textAlign: 'center' }}   >
                             <ErrorIcon /><br />
                             You dont have any guesses yet...
                         </Typography>
@@ -169,7 +133,7 @@ const LoggedIn = () => {
                 <Grid style={{ textAlign: 'center' }} >
                     {(personalBestGuesses.length !== 0) &&
                         <OutlinedButton type='button' height={40} width={132} buttonText='LOAD MORE' fontWeight={400} fontSize={16} color='#619B8A' borderColor='#619B8A'
-                            sx={{ mt: 3, mb: 3 }} onClick={(e: any) => setLoadMoreBestGuesses(true)} background='#FFFFFF' />
+                            sx={{ mt: 3, mb: 3 }} onClick={LoadMorePersonalBestGuesses} background='#FFFFFF' />
                     }
                 </Grid >
             </Grid>
@@ -185,10 +149,7 @@ const LoggedIn = () => {
                     </Typography>
                 </Grid>
 
-                <Grid container spacing={mostRecentLocationsLogged.length} style={{
-                    background: 'white', display: 'flex',
-                    flexDirection: 'row', justifyContent: 'center'
-                }}>
+                <Grid container spacing={mostRecentLocationsLogged.length} style={{ paddingTop: 20, background: 'white', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
                     {mostRecentLocationsLogged.map((location) => (
                         <div style={{ padding: 5 }} key={location.locationId}>
                             <LocationCard width={420} height={240}
@@ -196,7 +157,7 @@ const LoggedIn = () => {
                         </div>
                     ))}
                     {(mostRecentLocationsLogged.length === 0) &&
-                        <Typography style={{ color: '#b7d164', background: 'white', fontWeight: 400, fontSize: 13, textAlign: 'center' }}   >
+                        <Typography style={{ color: '#619B8A', background: 'white', fontWeight: 400, fontSize: 13, textAlign: 'center' }}   >
                             <ErrorIcon /><br />
                             There are currenty no posts available...
                         </Typography>
@@ -206,7 +167,7 @@ const LoggedIn = () => {
                 <Grid style={{ textAlign: 'center' }} >
                     {(mostRecentLocationsLogged.length !== 0) &&
                         <OutlinedButton type='button' height={40} width={132} buttonText='LOAD MORE' fontWeight={400} fontSize={16} color='#619B8A' borderColor='#619B8A'
-                            sx={{ mt: 3, mb: 3 }} onClick={(e: any) => setLoadMoreLocations(true)} background='#FFFFFF' />
+                            sx={{ mt: 3, mb: 3 }} onClick={LoadMoreLocations} background='#FFFFFF' />
                     }
                 </Grid >
             </Grid >
