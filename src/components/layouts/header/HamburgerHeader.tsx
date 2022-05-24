@@ -88,7 +88,7 @@ const HamburgerHeader = () => {
                 </div>
                 <Divider />
                 {/* Hamburger header content */}
-                {((!loggedUser)) &&
+                {((loggedUser.userId === 0)) &&
                     < div >
                         <Box sx={{ my: 2, mx: 5, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                             {/* Guest */}
@@ -101,12 +101,12 @@ const HamburgerHeader = () => {
                     </div>
                 }
 
-                {
-                    ((loggedUser)) &&
+                {((loggedUser.userId !== 0)) &&
                     <div>
                         <Box sx={{ my: 2, mx: 5, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                             {/* Logged in */}
-                            <BurgerProfileButton height={48} width={48} sx={null} onClick={null} buttonText='Home' color='#233D4D' firstName={loggedUser.firstName} lastName={loggedUser.lastName} />
+                            <BurgerProfileButton height={48} width={48} sx={null} onClick={null}
+                                buttonText='Home' color='#233D4D' firstName={loggedUser.firstName} lastName={loggedUser.lastName} />
                             <BurgerButton sx={null} onClick={() => navigate('/')} buttonText='Home' color='#233D4D' />
                             <BurgerButton sx={null} onClick={null} buttonText='Profile Settings' color='#233D4D' />
                             <BurgerButton sx={null} onClick={logout} buttonText='Logout' color='#619B8A' />

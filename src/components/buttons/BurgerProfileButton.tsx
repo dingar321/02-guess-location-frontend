@@ -18,17 +18,13 @@ const BurgerProfileButton = ({ onClick, sx, buttonText, color, firstName, lastNa
                 justifyContent: 'left', marginBottom: '30px', marginTop: '10px', marginRight: 100
             }}>
 
-            <IconButton disabled style={{ width: width, height: height, background: 'bebebe' }} onClick={onClick} sx={sx}>
+            {(!loggedUser) &&
+                <PersonIcon style={{ color: '#FFFFFF' }} />
+            }
 
-                {(!loggedUser) &&
-                    <PersonIcon style={{ color: '#FFFFFF' }} />
-                }
-
-                {(loggedUser) &&
-                    <Avatar src={loggedUser.s3Imagekey} />
-                }
-
-            </IconButton>
+            {(loggedUser) &&
+                <Avatar src={loggedUser.s3Imagekey} />
+            }
 
             <Typography sx={{ fontSize: '24px' }} style={{ paddingLeft: '30px' }}>
                 {firstName} {lastName}
