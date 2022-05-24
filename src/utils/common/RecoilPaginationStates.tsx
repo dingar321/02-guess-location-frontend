@@ -6,10 +6,10 @@ import Pin from "../types/Pin";
 
 export const PaginateNumberLocations = atom<number>({
     key: 'PaginateNumberLocations',
-    default: 3,
+    default: 6,
 });
 
 export const PaginateNumberBestGuesses = atom<number>({
     key: 'PaginateNumberBestGuesses',
-    default: 3,
+    default: 6,
 });

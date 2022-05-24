@@ -14,6 +14,8 @@ import { PaginateNumberBestGuesses, PaginateNumberLocations } from '../../utils/
 
 const LoggedIn = () => {
 
+    //TODO: For pagination set the amount of pages that i have in the session !!
+
     //User state
     const [loggedUser, setLoggedUser] = useRecoilState<User>(UserState);
 
@@ -23,21 +25,19 @@ const LoggedIn = () => {
 
     //Best guesses array and pagination states
     const [personalBestGuesses, setPersonalBestGuesses] = useRecoilState<Guess[]>(PersonalBestGuessesLogged);
-    const [loadMoreBestGuesses, setLoadMoreBestGuesses] = useState<boolean>(false);
     const [paginateNumberBestGuesses, setPaginateNumbetBestGuesses] = useRecoilState<number>(PaginateNumberBestGuesses);
 
     useEffect(() => {
         //We get the locations
         const fetchMostRecentLocations = async () => {
-            const url = 'http://localhost:3333/location/list?limit=' + paginateNumberLocations as string;
+            const url = 'http://localhost:3333/location/list-excluded?limit=3';
             axios({
                 method: "GET",
                 url: url,
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true,
             }).then(async function (response) {
-                console.log('Initial Call: ', url);
-                setPaginateNumberLocations(paginateNumberBestGuesses + 3)
+                //console.log('Initial Call: ', url);
                 setMostRecentLocationsLogged(response.data);
             }).catch(error => {
                 console.log(error);
@@ -45,15 +45,14 @@ const LoggedIn = () => {
         }
         //We get the best guesses
         const fetchPersonalGusses = async () => {
-            const url = 'http://localhost:3333/guess/for-user?limit=' + paginateNumberBestGuesses as string;
+            const url = 'http://localhost:3333/guess/for-user?limit=3';
             axios({
                 method: "GET",
                 url: url,
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true,
             }).then(async function (response) {
-                console.log('Initial Call: ', url);
-                setPaginateNumbetBestGuesses(paginateNumberBestGuesses + 3)
+                //console.log('Initial Call: ', url);
                 setPersonalBestGuesses(response.data);
             }).catch(error => {
                 console.log(error);
@@ -65,21 +64,22 @@ const LoggedIn = () => {
         fetchMostRecentLocations();
     }, [])
 
+    //Re render if the arrays change 
     useEffect(() => {
-
     }, [mostRecentLocationsLogged, personalBestGuesses])
 
     const LoadMoreLocations = () => {
         //When pressed we load more locations. (number of specified in the pagination state)
-        const url = 'http://localhost:3333/location/list?limit=' + paginateNumberLocations as string;
+        const url = 'http://localhost:3333/location/list-excluded?limit=' + paginateNumberLocations as string;
         axios({
             method: "GET",
             url: url,
             headers: { 'Content-Type': 'application/json' },
             withCredentials: true,
         }).then(async function (response) {
-            console.log('Additional Call: ', url);
-            setPaginateNumberLocations(paginateNumberBestGuesses + 3)
+            //console.log('Additional Call: ', url);
+            setPaginateNumberLocations(paginateNumberLocations + 3)
+            //setMostRecentLocationsLogged([...mostRecentLocationsLogged, ...response.data]);
             setMostRecentLocationsLogged(response.data);
         }).catch(error => {
             console.log(error);
@@ -94,7 +94,7 @@ const LoggedIn = () => {
             headers: { 'Content-Type': 'application/json' },
             withCredentials: true,
         }).then(async function (response) {
-            console.log('Additional Call: ', url);
+            //console.log('Additional Call: ', url);
             setPaginateNumbetBestGuesses(paginateNumberBestGuesses + 3)
             setPersonalBestGuesses(response.data);
         }).catch(error => {
@@ -116,7 +116,7 @@ const LoggedIn = () => {
                         Your personal best guesses appear here. <br /> Go on and try to beat your personal records or set a new one!
                     </Typography>
                 </Grid>
-                <Grid container spacing={personalBestGuesses.length} style={{ paddingTop: 20, background: 'white', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                <Grid container spacing={personalBestGuesses.length} style={{ background: 'white', display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
                     {personalBestGuesses.map((guess) => (
                         <div style={{ padding: 5 }} key={guess.guessId}>
                             <GuessCard width={420} height={240}
